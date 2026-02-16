@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProtHunter | El Buscador de Proteína Real</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <header class="glass-header">
+        <div class="logo">
+            <i data-lucide="biceps-flexed"></i>
+            <span>Prot<span class="highlight">Hunter</span></span>
+        </div>
+        <div class="search-bar">
+            <i data-lucide="search"></i>
+            <input type="text" id="searchInput" placeholder="Busca 'Whey', 'Isolada', 'Vainilla'...">
+        </div>
+    </header>
+
+    <section class="controls">
+        <div class="filter-group">
+            <button class="btn active" onclick="filterData('all')">Todo</button>
+            <button class="btn" onclick="filterData('whey')">Whey</button>
+            <button class="btn" onclick="filterData('isolate')">Isolada</button>
+            <button class="btn" onclick="filterData('vegan')">Vegana</button>
+        </div>
+        <div class="sort-group">
+            <span>Ordenar por:</span>
+            <select id="sortSelect">
+                <option value="relevance">Relevancia</option>
+                <option value="price_asc">Precio (Barato primero)</option>
+                <option value="purity_desc">Pureza (Más proteína)</option>
+                <option value="real_value">€ / Gramo Real (Lo importante)</option>
+            </select>
+        </div>
+    </section>
+
+    <main id="productGrid" class="grid-container">
+        </main>
+
+    <footer>
+        <p>Hecho con <i data-lucide="code"></i> y cafeína por un Teleco | No me banees Amazon, por favor.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons(); // Inicializar iconos
+    </script>
+</body>
+</html>
