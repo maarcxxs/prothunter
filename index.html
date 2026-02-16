@@ -39,13 +39,75 @@
             </select>
         </div>
     </section>
+    <section class="hero">
+        <h1>Encuentra tu proteína al <span class="highlight">mejor precio</span></h1>
+        <p>Analizamos el mercado en tiempo real para que pagues por el músculo, no por el marketing.</p>
+    </section>
+
+    <nav class="brand-nav">
+        <div class="brand-item" onclick="filterByBrand('MyProtein')">MyProtein</div>
+        <div class="brand-item" onclick="filterByBrand('HSN')">HSN</div>
+        <div class="brand-item" onclick="filterByBrand('Prozis')">Prozis</div>
+        <div class="brand-item" onclick="filterByBrand('Amix')">Amix</div>
+        <div class="brand-item" onclick="filterByBrand('ON')">Optimum Nutrition</div>
+    </nav>
 
     <main id="productGrid" class="grid-container">
         </main>
 
-    <footer>
-        <p>Hecho con <i data-lucide="code"></i> y cafeína por un Teleco | No me banees Amazon, por favor.</p>
-    </footer>
+    <footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <div class="footer-logo">
+                <i data-lucide="biceps-flexed"></i>
+                <span>Prot<span class="highlight">Hunter</span></span>
+            </div>
+            <p class="footer-description">
+                La herramienta definitiva para el atleta inteligente. Analizamos el mercado de suplementación en tiempo real para que optimices cada euro de tu inversión en salud.
+            </p>
+            <div class="social-links">
+                <a href="#"><i data-lucide="instagram"></i></a>
+                <a href="#"><i data-lucide="twitter"></i></a>
+                <a href="#"><i data-lucide="github"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>Navegación</h4>
+            <ul>
+                <li><a href="#">Comparador Whey</a></li>
+                <li><a href="#">Creatina (Próximamente)</a></li>
+                <li><a href="#">Histórico de Precios</a></li>
+                <li><a href="#">Blog de Suplementación</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Marcas Trackeadas</h4>
+            <ul>
+                <li><a href="#">MyProtein</a></li>
+                <li><a href="#">HSN Store</a></li>
+                <li><a href="#">Prozis</a></li>
+                <li><a href="#">Optimum Nutrition</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h4>Ayuda</h4>
+            <ul>
+                <li><a href="#">Contacto</a></li>
+                <li><a href="#">Aviso Legal</a></li>
+                <li><a href="#">Política de Cookies</a></li>
+                <li><a href="#">Hacking Ético & Privacidad</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 ProtHunter - Ingeniería aplicada al fitness. Todos los derechos reservados.</p>
+        <p class="dev-tag">Built by <span class="highlight">maarcxxs</span> | <i data-lucide="terminal"></i> Dev Mode</p>
+    </div>
+</footer>
 
     <script src="script.js"></script>
     <script>
