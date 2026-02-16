@@ -1,0 +1,37 @@
+name: Actualizar Precios Proteina
+
+on:
+  schedule:
+    - cron: '0 8 * * *' # Se ejecuta todos los días a las 8:00 AM UTC
+  workflow_dispatch: # Permite ejecutarlo manualmente desde un botón (para probar)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # Permiso para que el bot pueda hacer git push
+
+    steps:
+      - name: Descargar código del repo
+        uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Instalar Chrome y Librerías
+        run: |
+          pip install -r requirements.txt
+          
+      - name: Ejecutar Scraper
+        run: python scraper.py
+
+      - name: Guardar cambios (Commit & Push)
+        run: |
+          git config --global user.name 'Bot de Precios'
+          git config --global user.email 'bot@noreply.github.com'
+          git add data.json
+          git commit -m "Actualización diaria de precios" || exit 0
+          git push
