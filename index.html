@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProtHunter | El Buscador de Proteína Real</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ProtHunter | Comparador de Suplementación</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -12,109 +12,64 @@
 <body>
 
     <header class="glass-header">
-        <div class="logo">
-            <i data-lucide="biceps-flexed"></i>
-            <span>Prot<span class="highlight">Hunter</span></span>
-        </div>
-        <div class="search-bar">
-            <i data-lucide="search"></i>
-            <input type="text" id="searchInput" placeholder="Busca 'Whey', 'Isolada', 'Vainilla'...">
+        <div class="header-content">
+            <div class="logo">
+                <i data-lucide="biceps-flexed"></i>
+                <span>Prot<span class="highlight">Hunter</span></span>
+            </div>
+            <div class="search-bar">
+                <i data-lucide="search"></i>
+                <input type="text" id="searchInput" placeholder="Buscar proteína...">
+            </div>
         </div>
     </header>
 
-    <section class="controls">
-        <div class="filter-group">
-            <button class="btn active" onclick="filterData('all')">Todo</button>
-            <button class="btn" onclick="filterData('whey')">Whey</button>
-            <button class="btn" onclick="filterData('isolate')">Isolada</button>
-            <button class="btn" onclick="filterData('vegan')">Vegana</button>
-        </div>
-        <div class="sort-group">
-            <span>Ordenar por:</span>
-            <select id="sortSelect">
-                <option value="relevance">Relevancia</option>
-                <option value="price_asc">Precio (Barato primero)</option>
-                <option value="purity_desc">Pureza (Más proteína)</option>
-                <option value="real_value">€ / Gramo Real (Lo importante)</option>
-            </select>
-        </div>
-    </section>
     <section class="hero">
-        <h1>Encuentra tu proteína al <span class="highlight">mejor precio</span></h1>
-        <p>Analizamos el mercado en tiempo real para que pagues por el músculo, no por el marketing.</p>
+        <div class="hero-content">
+            <h1>Paga por <span class="highlight">calidad</span>,<br>no por marketing.</h1>
+            <p>Rastreamos una gran variedad de marcas en tiempo real para darte el precio por gramo de proteína real.</p>
+        </div>
     </section>
 
-    <nav class="brand-nav">
-        <div class="brand-item" onclick="filterByBrand('MyProtein')">MyProtein</div>
-        <div class="brand-item" onclick="filterByBrand('HSN')">HSN</div>
-        <div class="brand-item" onclick="filterByBrand('Prozis')">Prozis</div>
-        <div class="brand-item" onclick="filterByBrand('Amix')">Amix</div>
-        <div class="brand-item" onclick="filterByBrand('ON')">Optimum Nutrition</div>
+    <nav class="brand-scroll">
+        <button class="brand-chip active" onclick="filterData('all')">Todo</button>
+        <button class="brand-chip" onclick="filterData('MyProtein')">MyProtein</button>
+        <button class="brand-chip" onclick="filterData('HSN')">HSN</button>
+        <button class="brand-chip" onclick="filterData('Prozis')">Prozis</button>
+        <button class="brand-chip" onclick="filterData('Amix')">Amix</button>
+        <button class="brand-chip" onclick="filterData('ON')">Optimum</button>
     </nav>
+
+    <div class="controls-container">
+        <span class="result-count">Mostrando resultados en tiempo real</span>
+        <select id="sortSelect">
+            <option value="real_value">Mejor Precio Real (€/g)</option>
+            <option value="price_asc">Más barato (Total)</option>
+            <option value="purity_desc">Mayor Pureza</option>
+        </select>
+    </div>
 
     <main id="productGrid" class="grid-container">
         </main>
 
     <footer class="main-footer">
-    <div class="footer-container">
-        <div class="footer-section">
-            <div class="footer-logo">
-                <i data-lucide="biceps-flexed"></i>
-                <span>Prot<span class="highlight">Hunter</span></span>
+        <div class="footer-content">
+            <div class="footer-col">
+                <div class="logo small">ProtHunter</div>
+                <p>Ingeniería de datos aplicada al fitness.</p>
             </div>
-            <p class="footer-description">
-                La herramienta definitiva para el atleta inteligente. Analizamos el mercado de suplementación en tiempo real para que optimices cada euro de tu inversión en salud.
-            </p>
-            <div class="social-links">
-                <a href="#"><i data-lucide="instagram"></i></a>
-                <a href="#"><i data-lucide="twitter"></i></a>
-                <a href="#"><i data-lucide="github"></i></a>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <a href="#">Aviso Legal</a>
+                <a href="#">Privacidad</a>
             </div>
         </div>
-
-        <div class="footer-section">
-            <h4>Navegación</h4>
-            <ul>
-                <li><a href="#">Comparador Whey</a></li>
-                <li><a href="#">Creatina (Próximamente)</a></li>
-                <li><a href="#">Histórico de Precios</a></li>
-                <li><a href="#">Blog de Suplementación</a></li>
-            </ul>
+        <div class="copyright">
+            <p>2026 ProtHunter. Imágenes propiedad de sus marcas.</p>
         </div>
-
-        <div class="footer-section">
-            <h4>Marcas Trackeadas</h4>
-            <ul>
-                <li><a href="#">MyProtein</a></li>
-                <li><a href="#">HSN Store</a></li>
-                <li><a href="#">Prozis</a></li>
-                <li><a href="#">Optimum Nutrition</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-section">
-            <h4>Ayuda</h4>
-            <ul>
-                <li><a href="#">Contacto</a></li>
-                <li><a href="#">Aviso Legal</a></li>
-                <li><a href="#">Política de Cookies</a></li>
-                <li><a href="#">Hacking Ético & Privacidad</a></li>
-            </ul>
-        </div>
-    </div>
-    <p style="font-size: 0.7rem; opacity: 0.6; margin-top: 1rem;">
-        Aviso: ProtHunter es una herramienta informativa. Los nombres de marca e imágenes de productos son marcas registradas de sus respectivos propietarios y se utilizan aquí bajo el principio de uso legítimo para fines comparativos.
-    </p>
-    <div class="footer-bottom">
-        <p>&copy; 2026 ProtHunter - Ingeniería aplicada al fitness. Todos los derechos reservados.</p>
-        <p class="dev-tag">Built by <span class="highlight">maarcxxs</span> | <i data-lucide="terminal"></i> Dev Mode</p>
-    </div>
-    
-</footer>
+    </footer>
 
     <script src="script.js"></script>
-    <script>
-        lucide.createIcons(); // Inicializar iconos
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
