@@ -20,6 +20,7 @@ TARGETS = [
         "default_purity": 72,
         "fixed_weight": 1.0,
         "local_image": "img/myprotein.jpg",
+        "category": "protein",
         "affiliate_link": None
     },
     {
@@ -30,6 +31,7 @@ TARGETS = [
         "default_purity": 78,
         "fixed_weight": 0.5,
         "local_image": "img/hsn.jpg",
+        "category": "protein",
         "affiliate_link": None
     },
     {
@@ -40,6 +42,7 @@ TARGETS = [
         "default_purity": 80,
         "fixed_weight": 1.0,
         "local_image": "img/prozis.jpg",
+        "category": "protein",
         "affiliate_link": None
     },
     {
@@ -51,6 +54,7 @@ TARGETS = [
         "default_purity": 79,
         "fixed_weight": 0.9,
         "local_image": "img/on.jpg",
+        "category": "protein",
         "affiliate_link": None
     },
     {
@@ -62,6 +66,7 @@ TARGETS = [
         "default_purity": 73,
         "fixed_weight": 2.0,
         "local_image": "img/iron.jpg",
+        "category": "protein",
         "affiliate_link": None
     },
     {
@@ -72,6 +77,7 @@ TARGETS = [
         "default_purity": 86,
         "fixed_weight": 1.0,
         "local_image": "img/biotech.jpg",
+        "category": "protein",
         "affiliate_link": None
     },
     {
@@ -83,6 +89,7 @@ TARGETS = [
         "default_purity": 75,
         "fixed_weight": 0.9,
         "local_image": "img/decathlon.jpg",
+        "category": "protein",
         "affiliate_link": None
     }
 ]
@@ -192,6 +199,7 @@ def scrape_site(driver, target):
                 "image": target['local_image'],
                 "weight_kg": target['fixed_weight'],
                 "protein_percent": target['default_purity'],
+                "category": target['category'],
                 "link": target.get('affiliate_link') or target['url'],
                 "last_update": datetime.now().strftime("%d/%m/%Y %H:%M")
             }

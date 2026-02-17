@@ -70,15 +70,17 @@ function filterData(brand) {
     filterProducts(searchTerm, brand);
 }
 
-function filterProducts(search, brandFilter) {
+function filterProducts(search, categoryFilter) {
     let filtered = allProducts;
 
-    // 1. Filtro de marca
-    if (brandFilter && brandFilter !== 'Todo' && brandFilter !== 'all') {
-        filtered = filtered.filter(p => p.brand.toLowerCase() === brandFilter.toLowerCase());
+    // 1. FILTRO POR CATEGORÍA (Los botones)
+    // Si el filtro no es 'all' ni 'Todo', filtramos por la etiqueta 'category' del JSON
+    if (categoryFilter && categoryFilter !== 'Todo' && categoryFilter !== 'all') {
+        filtered = filtered.filter(p => p.category.toLowerCase() === categoryFilter.toLowerCase());
     }
 
-    // 2. Filtro de búsqueda (Nombre o Marca)
+    // 2. FILTRO DE BÚSQUEDA (Barra de texto)
+    // Aquí seguimos buscando por Nombre o Marca para que el usuario pueda escribir "MyProtein"
     if (search) {
         const term = search.toLowerCase();
         filtered = filtered.filter(p => 
