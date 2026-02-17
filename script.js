@@ -1,155 +1,153 @@
-// --- DATOS MOCKEADOS (Esto es lo que tu Python debería escupir en JSON) ---
-const products = [
-    {
-        id: 1,
-        name: "Impact Whey Protein",
-        brand: "MyProtein",
-        type: "whey",
-        price: 24.99,
-        weight_kg: 1.0,
-        protein_percent: 72, // 72% de pureza
-        image: "https://static.thcdn.com/productimg/1600/1600/10530943-1954885871295725.jpg",
-        link: "#"
-    },
-    {
-        id: 2,
-        name: "Gold Standard 100% Whey",
-        brand: "Optimum Nutrition",
-        type: "whey",
-        price: 34.90,
-        weight_kg: 0.9,
-        protein_percent: 79,
-        image: "https://m.media-amazon.com/images/I/61JS6lWc+AL._AC_SL1080_.jpg",
-        link: "#"
-    },
-    {
-        id: 3,
-        name: "IsoPrime CFM",
-        brand: "Amix",
-        type: "isolate",
-        price: 45.00,
-        weight_kg: 1.0,
-        protein_percent: 90, // Muy pura
-        image: "https://www.amix.es/237-large_default/isoprime-cfm-1kg.jpg",
-        link: "#"
-    },
-    {
-        id: 4,
-        name: "Vegan Protein Blend",
-        brand: "MyProtein",
-        type: "vegan",
-        price: 18.99,
-        weight_kg: 1.0,
-        protein_percent: 65,
-        image: "https://static.thcdn.com/productimg/1600/1600/11317537-1234676527582531.jpg",
-        link: "#"
+const DATA_URL = 'data.json';
+let allProducts = [];
+
+const ICONS = {
+    trending: '<i data-lucide="trending-up"></i>',
+    fire: '<i data-lucide="flame"></i>',
+    award: '<i data-lucide="award"></i>'
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    lucide.createIcons();
+    loadData();
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        filterProducts(e.target.value, document.querySelector('.brand-chip.active').innerText);
+    });
+
+    document.getElementById('sortSelect').addEventListener('change', () => {
+        renderProducts(allProducts); 
+    });
+});
+
+async function loadData() {
+    try {
+        const response = await fetch(DATA_URL + '?v=' + new Date().getTime());
+        allProducts = await response.json();
+      
+        allProducts = allProducts.map(product => {
+            return {
+                ...product,
+                realPricePer100g: calculateRealPrice(product)
+            };
+        });
+
+        renderProducts(allProducts);
+        updateLastUpdate(allProducts);
+    } catch (error) {
+        console.error("Error cargando datos:", error);
+        document.getElementById('productGrid').innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Cargando datos del mercado...</p>';
     }
-];
-
-// --- LÓGICA DE NEGOCIO (El cerebro) ---
-
-// Función para calcular el precio real por gramo de proteína (TU KPI CLAVE)
-function calculateRealPrice(price, weight, percentage) {
-    const totalProteinGrams = (weight * 1000) * (percentage / 100);
-    const pricePerGram = price / totalProteinGrams;
-    return (pricePerGram * 100).toFixed(2); // Precio por cada 100g de proteína pura
 }
 
-// Función para renderizar las tarjetas
-function renderProducts(data) {
-    const grid = document.getElementById('productGrid');
-    grid.innerHTML = ''; // Limpiar grid
 
-    data.forEach(product => {
-        const realPrice = calculateRealPrice(product.price, product.weight_kg, product.protein_percent);
-        
-        // Etiqueta dinámica: Si el precio real es bajo (<3.5€/100g pura), es CHOLLO
-        let badgeHTML = '';
-        if (realPrice < 3.5) {
-            badgeHTML = `<div class="card-badge">CHOLLO 🔥</div>`;
-        } else if (product.protein_percent > 85) {
-            badgeHTML = `<div class="card-badge" style="background:#3b82f6">CALIDAD 💎</div>`;
+function calculateRealPrice(product) {
+    const weightKg = product.weight_kg || 1.0;
+    const totalGrams = weightKg * 1000;
+    const realProteinGrams = totalGrams * (product.protein_percent / 100);
+    if (realProteinGrams <= 0) return 999; 
+    
+    return (product.price / (realProteinGrams / 100)).toFixed(2);
+}
+
+function filterData(brand) {
+    document.querySelectorAll('.brand-chip').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active'); 
+
+    const searchTerm = document.getElementById('searchInput').value;
+    filterProducts(searchTerm, brand);
+}
+
+function filterProducts(search, brandFilter) {
+    let filtered = allProducts;
+
+    // filtro de marca
+    if (brandFilter && brandFilter !== 'Todo' && brandFilter !== 'all') {
+        filtered = filtered.filter(p => p.brand.toLowerCase() === brandFilter.toLowerCase());
+    }
+
+    // filtro de busqudda
+    if (search) {
+        filtered = filtered.filter(p => 
+            p.name.toLowerCase().includes(search.toLowerCase()) || 
+            p.brand.toLowerCase().includes(search.toLowerCase())
+        );
+    }
+
+    renderProducts(filtered);
+}
+
+function renderProducts(products) {
+    const grid = document.getElementById('productGrid');
+    const sortMode = document.getElementById('sortSelect').value;
+
+    // ordenación dinamica
+    products.sort((a, b) => {
+        if (sortMode === 'real_value') return a.realPricePer100g - b.realPricePer100g; // Menor a mayor
+        if (sortMode === 'price_asc') return a.price - b.price;
+        if (sortMode === 'purity_desc') return b.protein_percent - a.protein_percent;
+    });
+
+    grid.innerHTML = '';
+
+    if (products.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; opacity: 0.6;">No se encontraron proteínas con esos filtros.</p>';
+        return;
+    }
+
+    // encontrar el mejor precio absoluto para ponerle la etiqueta "CHOLLO"
+    const bestPrice = Math.min(...products.map(p => parseFloat(p.realPricePer100g)));
+
+    products.forEach(product => {
+        // Etiquetas dinámicas
+        let badge = '';
+        if (parseFloat(product.realPricePer100g) === bestPrice) {
+            badge = `<div class="card-badge" style="background:var(--accent); color:#000;">${ICONS.fire} CHOLLO</div>`;
+        } else if (product.protein_percent >= 90) {
+            badge = `<div class="card-badge" style="background:#3b82f6;">${ICONS.award} PREMIUM</div>`;
         }
 
+        const imageSrc = product.image || 'img/placeholder.png'; 
+        
         const card = document.createElement('article');
         card.className = 'card';
         card.innerHTML = `
-            ${badgeHTML}
-            <img src="${product.image}" alt="${product.name}" class="card-img">
+            ${badge}
+            <div class="img-container">
+                <img src="${imageSrc}" alt="${product.name}" class="card-img" onerror="this.src='https://placehold.co/400x400/1e293b/FFF?text=Protein'">
+            </div>
             <div class="card-body">
                 <span class="card-brand">${product.brand}</span>
                 <h3 class="card-title">${product.name}</h3>
                 
-                <div class="data-row">
-                    <span>Precio lista:</span>
-                    <span class="price-big">${product.price}€</span>
-                </div>
-                
-                <div class="data-row" style="color: var(--accent)">
-                    <span>Precio real (100g prote):</span>
-                    <span class="real-price">${realPrice}€</span>
+                <div class="specs">
+                    <span><i data-lucide="dumbbell"></i> ${product.protein_percent}% Pureza</span>
+                    <span><i data-lucide="weight"></i> ${product.weight_kg}kg</span>
                 </div>
 
-                <div class="data-row">
-                    <span style="font-size: 0.8rem; color: #94a3b8">Pureza: ${product.protein_percent}%</span>
+                <div class="price-box">
+                    <div class="row">
+                        <span class="unit-price">Real: <strong>${product.realPricePer100g}€</strong> /100g prot.</span>
+                    </div>
+                    <div class="row" style="margin-top:0.5rem; align-items:end;">
+                        <span class="big-price">${product.price}€</span>
+                        <a href="${product.link}" target="_blank" class="btn-buy">VER OFERTA</a>
+                    </div>
                 </div>
-                <div class="purity-container">
-                    <div class="purity-bar" style="width: ${product.protein_percent}%"></div>
-                </div>
-
-                <button class="btn-buy" onclick="window.open('${product.link}', '_blank')">
-                    VER OFERTA <i data-lucide="external-link" size="16"></i>
-                </button>
             </div>
         `;
         grid.appendChild(card);
     });
+
+    lucide.createIcons(); 
     
-    // Reinicializar iconos para los nuevos elementos
-    if(typeof lucide !== 'undefined') lucide.createIcons();
+   
+    const countLabel = document.querySelector('.result-count');
+    if(countLabel) countLabel.innerText = `Mostrando ${products.length} productos en tiempo real`;
 }
 
-// --- FILTROS Y ORDENACIÓN ---
-
-// Escuchar el buscador
-document.getElementById('searchInput').addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    const filtered = products.filter(p => p.name.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term));
-    renderProducts(filtered);
-});
-
-// Escuchar el Select de ordenación
-document.getElementById('sortSelect').addEventListener('change', (e) => {
-    const criteria = e.target.value;
-    let sorted = [...products]; // Copia del array para no mutar el original
-
-    if (criteria === 'price_asc') {
-        sorted.sort((a, b) => a.price - b.price);
-    } else if (criteria === 'purity_desc') {
-        sorted.sort((a, b) => b.protein_percent - a.protein_percent);
-    } else if (criteria === 'real_value') {
-        sorted.sort((a, b) => {
-            const realA = calculateRealPrice(a.price, a.weight_kg, a.protein_percent);
-            const realB = calculateRealPrice(b.price, b.weight_kg, b.protein_percent);
-            return realA - realB;
-        });
-    }
-    renderProducts(sorted);
-});
-
-// Botones de filtro
-function filterData(type) {
-    // Actualizar estilo botones
-    document.querySelectorAll('.filter-group .btn').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
-
-    if (type === 'all') {
-        renderProducts(products);
-    } else {
-        const filtered = products.filter(p => p.type === type);
-        renderProducts(filtered);
+function updateLastUpdate(data) {
+    if(data.length > 0 && data[0].last_update) {
+        console.log("Última actualización de precios:", data[0].last_update);
     }
 }
-
-// Cargar inicial
-renderProducts(products);

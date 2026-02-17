@@ -1,81 +1,149 @@
 import json
 import time
 import random
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from datetime import datetime
+import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-def get_driver():
-    options = Options()
-    options.add_argument("--headless") # OBLIGATORIO para servidores sin pantalla
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    # User Agent para no parecer un robot cutre
-    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36")
-    return webdriver.Chrome(options=options)
-
-def scrape_myprotein(url):
-    driver = get_driver()
-    product_data = {}
-    
-    
-    print(f"Escaneando: {url}")
-    try:
-        driver.get(url)
-        # Esperamos a que cargue el precio (máx 10 seg)
-        wait = WebDriverWait(driver, 10)
-        
-        # --- SELECTORES REALES MYPROTEIN (Pueden variar) ---
-        
-        # 1. Nombre del producto
-        title_elem = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1.productName_title")))
-        product_data['name'] = title_elem.text
-
-        # 2. Precio (Suelen tener la clase 'productPrice_price' o similar)
-        # Buscamos algo que contenga el símbolo €
-        price_elem = driver.find_element(By.CSS_SELECTOR, ".productPrice_price") 
-        raw_price = price_elem.text.replace("€", "").replace(",", ".").strip()
-        product_data['price'] = float(raw_price)
-
-        # 3. Imagen
-        img_elem = driver.find_element(By.CSS_SELECTOR, ".productImage_image")
-        product_data['image'] = img_elem.get_attribute("src")
-        
-        # Datos estáticos (difíciles de sacar sin IA, los ponemos fijos por ahora)
-        product_data['brand'] = "MyProtein"
-        product_data['type'] = "whey" 
-        product_data['weight_kg'] = 1.0 # Asumimos 1kg para simplificar el MVP
-        product_data['protein_percent'] = 72 # Estándar de Impact Whey
-
-        product_data['link'] = url # Tu enlace de afiliado iría aquí
-
-        print(f"Éxito: {product_data['name']} - {product_data['price']}€")
-        
-    except Exception as e:
-        print(f"Error en {url}: {e}")
-        product_data = None
-    finally:
-        driver.quit()
-        
-    return product_data
-
-# --- LISTA DE PRODUCTOS ---
-urls = [
-    "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
-    # Añade más aquí...
+TARGETS = [
+    {
+        "brand": "MyProtein",
+        "url": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
+        "selectors": {
+            "price": ".price-with-discounts .price", 
+            "name": "h1.productName_title",
+            "image": ".productImage_image"
+        },
+        "default_purity": 72,
+        "fixed_weight": 1.0  
+    },
+    {
+        "brand": "HSN",
+        "url": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
+        "selectors": {
+            "price": ".final-price",
+            "name": ".product-name h1",
+            "image": "#MagicZoomProductMain img"
+        },
+        "default_purity": 78,
+        "fixed_weight": 2.0 
+    },
+    {
+        "brand": "Prozis",
+        "url": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g?label=TlVUMDAvMTQxNzY1MDE2Mg%3D%3D",
+        "selectors": {
+            "price": ".final-price",
+            "name": ".product-name",
+            "image": ".product-image img"
+        },
+        "default_purity": 80,
+        "fixed_weight": 1.0
+    },
+    {
+        "brand": "Biotech USA",
+        "url": "https://shop.biotechusa.es/products/protein-power-1000-g",
+        "selectors": {
+            "price": ".np-product__price",
+            "name": "#productTitle",
+            "image": ".np__slide_img"
+        },
+        "default_purity": 86,
+        "fixed_weight": 1.0
+    },
+    {
+        "brand": "Optimum Nutrition",
+        "url": "https://www.optimumnutrition.com/products/gold-standard-100-whey-protein-powder-eu?variant=52105832956171",
+        "selectors": {
+            "price": ".product-info__price sale-price", 
+            "name": ".product-info__title h2",
+            "image": ".product-gallery__media snap-center is-selected"
+        },
+        "default_purity": 80, #informar en la web que 80 tiene la de sin sabor, el resto cambia dependiendo del sabor
+        "fixed_weight": 0.9 
+    }
 ]
 
-# --- EJECUCIÓN PRINCIPAL ---
-if __name__ == "__main__":
+def get_driver():
+    options = uc.ChromeOptions()
+    options.add_argument('--headless=new') 
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--window-size=1920,1080").
+    return uc.Chrome(options=options)
+
+def clean_price(price_text):
+    """Limpia el texto 'Desde 34,99 €' para dejar el float 34.99"""
+    try:
+        clean = price_text.replace("€", "").replace("From", "").replace("Desde", "").strip()
+        clean = clean.replace(",", ".")
+        return float(clean)
+    except ValueError:
+        return None
+
+def scrape_site(driver, target):
+    print(f"[*] Analizando {target['brand']} ({target['fixed_weight']}kg)...")
+    try:
+        driver.get(target['url'])
+        time.sleep(random.uniform(3, 6))
+        
+        wait = WebDriverWait(driver, 15)
+        
+        price_elem = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, target['selectors']['price'])))
+        raw_price = price_elem.text
+        
+        try:
+            name = driver.find_element(By.CSS_SELECTOR, target['selectors']['name']).text
+        except:
+            name = f"{target['brand']} Whey Protein"
+
+        try:
+            image_url = driver.find_element(By.CSS_SELECTOR, target['selectors']['image']).get_attribute("src")
+        except:
+            image_url = "img/whey-protein.jpg"
+
+        price = clean_price(raw_price)
+        
+        if price:
+            print(f"   -> PRECIO ENCONTRADO: {price}€")
+            return {
+                "id": target['brand'].lower().replace(" ", "_"),
+                "brand": target['brand'],
+                "name": name,
+                "price": price,
+                "image": image_url,
+                "weight_kg": target['fixed_weight'], 
+                "protein_percent": target['default_purity'],
+                "link": target['url'], # afiliacion en el futuro
+                "last_update": datetime.now().strftime("%d/%m/%Y %H:%M")
+            }
+        else:
+            print(f"   -> ERROR: No se pudo limpiar el precio '{raw_price}'")
+            return None
+
+    except Exception as e:
+        print(f"   -> FALLO CRÍTICO en {target['brand']}: {str(e)}")
+        return None
+
+def main():
+    print("--- INICIANDO PROTHUNTER SCRAPER ---")
+    driver = get_driver()
     results = []
-    for url in urls:
-        data = scrape_myprotein(url)
+    
+    for target in TARGETS:
+        data = scrape_site(driver, target)
         if data:
             results.append(data)
-            time.sleep(random.uniform(2, 5)) # Pausa ética
     
-    # Guardar JSON
-    with open('data.json', 'w', encoding='utf-8') as f:
-        json.dump(results, f, ensure_ascii=False, indent=4)
+    driver.quit()
+
+    if results:
+        with open('data.json', 'w', encoding='utf-8') as f:
+            json.dump(results, f, ensure_ascii=False, indent=4)
+        print("\n[V] EXITO: Base de datos actualizada en data.json")
+    else:
+        print("\n[X] FRACASO: No se han extraído datos. Revisa selectores.")
+
+if __name__ == "__main__":
+    main()

@@ -2,15 +2,15 @@ name: Actualizar Precios Proteina
 
 on:
   schedule:
-    - cron: '0 8 * * *' # Se ejecuta todos los días a las 8:00 AM UTC
-  workflow_dispatch: # Permite ejecutarlo manualmente desde un botón (para probar)
+    - cron: '0 8 * * *' # se ejecuta automaticamete todos los dias a las 8 de la mañana
+  workflow_dispatch: # ejecuccion manual
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write # Permiso para que el bot pueda hacer git push
+      contents: write # permiso para que el bot pueda hacer push
 
     steps:
       - name: Descargar código del repo

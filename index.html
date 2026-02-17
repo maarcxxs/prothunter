@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ProtHunter | Comparador de Suplementación</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <title>Comparador de Proteínas y Suplementos | Precios Reales - ProtHunter</title>
+    <meta name="description" content="Encuentra la proteína whey más barata del mercado. Analizamos precios reales por gramo en MyProtein, HSN, Prozis y más. Ahorra en tus suplementos de gimnasio.">
+    <meta name="keywords" content="proteína barata, comparador suplementos, whey protein, creatina precio, myprotein oferta, hsn descuento, precio real proteína">
+    <meta property="og:title" content="ProtHunter | El buscador de proteína real">
+    <meta property="og:description" content="No pagues por marketing. Encuentra el mejor precio por gramo de proteína.">
+    <meta property="og:image" content="https://tu-usuario.github.io/prothunter/img/og-image.jpg"> 
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
@@ -30,10 +36,34 @@
             <p>Rastreamos una gran variedad de marcas en tiempo real para darte el precio por gramo de proteína real.</p>
         </div>
     </section>
+    <section class="how-it-works">
+        <div class="step">
+            <div class="icon-box"><i data-lucide="bot"></i></div>
+            <div class="step-text">
+                <h3>Rastreo Diario</h3>
+                <p>Nuestro algoritmo escanea MyProtein, HSN y más cada 24h.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="icon-box"><i data-lucide="calculator"></i></div>
+            <div class="step-text">
+                <h3>Cálculo Real</h3>
+                <p>Dividimos el precio entre los gramos reales de proteína pura.</p>
+            </div>
+        </div>
+        <div class="step">
+            <div class="icon-box"><i data-lucide="trending-down"></i></div>
+            <div class="step-text">
+                <h3>Sin Trampas</h3>
+                <p>Detectamos subidas artificiales antes del Black Friday.</p>
+            </div>
+        </div>
+    </section>
 
     <nav class="brand-scroll">
         <button class="brand-chip active" onclick="filterData('all')">Todo</button>
         <button class="brand-chip" onclick="filterData('MyProtein')">MyProtein</button>
+        <button class="brand-chip" onclick="filterData('Biotech USA')">Biotech USA</button>
         <button class="brand-chip" onclick="filterData('HSN')">HSN</button>
         <button class="brand-chip" onclick="filterData('Prozis')">Prozis</button>
         <button class="brand-chip" onclick="filterData('Amix')">Amix</button>
@@ -50,8 +80,54 @@
     </div>
 
     <main id="productGrid" class="grid-container">
-        </main>
+    </main>
+    <section class="seo-content">
+        <div class="seo-header">
+            <h2>¿Cómo elegir la <span class="highlight">mejor proteína</span>?</h2>
+            <p>Resolvemos las dudas más comunes para que no tires tu dinero.</p>
+        </div>
 
+        <div class="accordion">
+            <details>
+                <summary>¿Cómo calculamos el "Precio Real"? <i data-lucide="chevron-down"></i></summary>
+                <p>La mayoría de marcas te venden botes de 1kg donde solo el 70% es proteína y el resto son edulcorantes o espesantes. Nosotros normalizamos el precio basándonos exclusivamente en la cantidad de proteína neta que contiene el envase. Así comparamos peras con peras.</p>
+            </details>
+
+            <details>
+                <summary>¿Qué diferencia hay entre Whey e Isolada? <i data-lucide="chevron-down"></i></summary>
+                <p>La <strong>Whey (Concentrado)</strong> suele tener un 70-80% de pureza y algo más de lactosa y grasas. La <strong>Isolada (Aislado)</strong> filtra esos componentes llegando al 90% de pureza. Para la mayoría de usuarios, la Whey es la mejor opción calidad-precio, salvo que seas intolerante a la lactosa.</p>
+            </details>
+
+            <details>
+                <summary>¿Por qué cambian tanto los precios en MyProtein y HSN? <i data-lucide="chevron-down"></i></summary>
+                <p>Estas marcas utilizan precios dinámicos y códigos de descuento rotativos. Nuestro bot rastrea el precio final aplicado para decirte si hoy es un buen día para comprar o si es mejor esperar. No dependemos de ninguna marca.</p>
+            </details>
+            
+            <details>
+                <summary>¿Es seguro comprar a través de ProtHunter? <i data-lucide="chevron-down"></i></summary>
+                <p>Totalmente. Nosotros no vendemos nada. Te redirigimos directamente a la tienda oficial (MyProtein, Amazon, HSN, etc.) para que finalices la compra allí con todas las garantías de la marca.</p>
+            </details>
+
+            <details>
+                <summary>¿Por qué el sabor Chocolate tiene menos proteína? <i data-lucide="chevron-down"></i></summary>
+                <div style="padding: 0 1.2rem 1.2rem; color: var(--text-dim); line-height: 1.6; font-size: 0.95rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
+                    <p style="margin-bottom: 1rem;">
+                        Es pura física: <strong>el espacio es limitado</strong>. Un bote de proteína pura sin sabor suele rondar el 80-90% de pureza.
+                    </p>
+                    <p style="margin-bottom: 1rem;">
+                        Sin embargo, para conseguir sabores como "Doble Chocolate" o "Cookies", las marcas deben añadir cacao en polvo, galleta o aromas. Estos ingredientes ocupan espacio físico en el cacito (scoop). Si añades 5g de cacao, estás quitando 5g de proteína.
+                    </p>
+                    <ul style="list-style: disc; margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li><strong>Sabores Frutales/Vainilla:</strong> Usan aromas ligeros. La proteína baja muy poco (ej: de 80% a 78%).</li>
+                        <li><strong>Sabores Chocolate:</strong> El cacao es voluminoso. La proteína puede bajar hasta el 65-70%.</li>
+                    </ul>
+                    <div style="background: rgba(34, 197, 94, 0.1); border-left: 3px solid var(--accent); padding: 0.8rem; border-radius: 4px;">
+                        <strong>Consejo de experto:</strong> La diferencia real suele ser de apenas 1-2g de proteína por batido. No te obsesiones: elige el sabor que más te guste para mantener la adherencia a la dieta.
+                    </div>
+                </div>
+            </details>
+        </div>
+    </section>
     <footer class="main-footer">
         <div class="footer-content">
             <div class="footer-col">
