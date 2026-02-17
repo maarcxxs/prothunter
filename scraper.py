@@ -10,13 +10,13 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# --- CONFIGURACIÓN ---
+# --- CONFIGURACIÓN DE OBJETIVOS ---
 TARGETS = [
     {
         "brand": "MyProtein",
         "url": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
         "selectors": { "price": ".productPrice, .price, [data-test='product-price']" },
-        "fixed_name": "Impact Whey Protein 1KG",
+        "fixed_name": "Impact Whey Protein",
         "default_purity": 72,
         "fixed_weight": 1.0,
         "local_image": "img/myprotein.jpg",
@@ -26,7 +26,7 @@ TARGETS = [
         "brand": "HSN",
         "url": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
         "selectors": { "price": ".price-container .price, .product-price-primary" },
-        "fixed_name": "Evowhey Protein 500g",
+        "fixed_name": "Evowhey Protein 2.0",
         "default_purity": 78,
         "fixed_weight": 0.5,
         "local_image": "img/hsn.jpg",
@@ -35,7 +35,7 @@ TARGETS = [
     {
         "brand": "Prozis",
         "url": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
-        "selectors": { "price": ".final-price, p.price, .selling-price, .product-price" },
+        "selectors": { "price": ".selling-price, .final-price, .product-price" },
         "fixed_name": "100% Real Whey Protein",
         "default_purity": 80,
         "fixed_weight": 1.0,
@@ -45,9 +45,8 @@ TARGETS = [
     {
         "brand": "Optimum Nutrition",
         "url": "https://www.masmusculo.com/es/optimum-nutrition/100-whey-gold-standard-2lb-09kg-74210.html",
-        "selectors": { 
-            "price": "meta[itemprop='price'], #our_price_display" 
-        },
+        # SOLUCIÓN: Usamos el selector META que contiene el precio limpio en 'content'
+        "selectors": { "price": "meta[itemprop='price']" },
         "fixed_name": "Gold Standard 100% Whey",
         "default_purity": 79,
         "fixed_weight": 0.9,
@@ -57,9 +56,8 @@ TARGETS = [
     {
         "brand": "Iron Addict Labs",
         "url": "https://www.masmusculo.com/es/iron-addict-labs/addict-whey-2-kg-9214.html",
-        "selectors": { 
-            "price": "meta[itemprop='price'], #our_price_display" 
-        },
+        # SOLUCIÓN: Mismo truco del META tag
+        "selectors": { "price": "meta[itemprop='price']" },
         "fixed_name": "Addict Whey - 2KG",
         "default_purity": 73,
         "fixed_weight": 2.0,
@@ -70,7 +68,7 @@ TARGETS = [
         "brand": "BioTechUSA",
         "url": "https://shop.biotechusa.es/products/protein-power-1000-g", 
         "selectors": { "price": "#ProductPrice, .product-single__price" },
-        "fixed_name": "Protein Power 1KG",
+        "fixed_name": "Protein Power",
         "default_purity": 86,
         "fixed_weight": 1.0,
         "local_image": "img/biotech.jpg",
@@ -79,10 +77,8 @@ TARGETS = [
     {
         "brand": "Decathlon",
         "url": "https://www.decathlon.es/es/p/whey-protein-sabor-neutro-900g/339696/g77m8756406",
-        "selectors": { 
-            # Añadimos la clase "--large" que se ve en tu captura y clases parciales
-            "price": ".vp-price-amount, .vp-price-amount--large, .prc__active-price" 
-        },
+        # Selectores corregidos según tu captura
+        "selectors": { "price": ".vp-price-amount, .vp-price-amount--large" },
         "fixed_name": "WHEY PROTEIN 900g",
         "default_purity": 75,
         "fixed_weight": 0.9,
@@ -96,23 +92,25 @@ def get_driver():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
-    # Evita detección básica
     options.add_argument("--disable-blink-features=AutomationControlled")
-    
-    # HÍBRIDO: Detecta si es GitHub Actions (Linux) o Tu PC (Windows)
+    # User Agent móvil para engañar a Prozis y webs difíciles
+    options.add_argument("--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1")
+
     if os.name == 'posix': 
         print("--- MODO SERVIDOR (Linux) ---")
         options.add_argument('--headless=new') 
         return uc.Chrome(options=options, version_main=144)
     else: 
         print("--- MODO LOCAL (Windows) ---")
-        # En tu PC no forzamos versión para evitar conflictos
         return uc.Chrome(options=options)
 
 def clean_price(price_text):
     if not price_text: return None
+    # Limpiamos símbolos raros y espacios
+    clean_txt = str(price_text).replace('\xa0', '').replace('&nbsp;', '')
+    
     # Busca patrón XX.XX o XX,XX
-    match = re.search(r'(\d+[\.,]\d{2})', str(price_text))
+    match = re.search(r'(\d+[\.,]\d{2})', clean_txt)
     if match:
         clean = match.group(1).replace(',', '.')
         try:
@@ -122,19 +120,16 @@ def clean_price(price_text):
     return None
 
 def handle_popups(driver):
-    """ Intenta cerrar cookies y popups pulsando ESC y buscando botones """
     try:
-        # 1. Truco del Ingeniero: Pulsar ESC cierra la mayoría de modales
+        # ESC para cerrar modales
         driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.ESCAPE)
         time.sleep(0.5)
-        
-        # 2. Buscar botones de cookies agresivamente
+        # Click en botones de Cookies comunes
         buttons = driver.find_elements(By.XPATH, "//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'aceptar') or contains(., 'Accept') or contains(., 'Consent')]")
         if buttons:
             for btn in buttons:
                 if btn.is_displayed():
                     driver.execute_script("arguments[0].click();", btn)
-                    print("   [!] Cookie/Popup aplastado.")
                     break
     except:
         pass
@@ -143,44 +138,48 @@ def scrape_site(driver, target):
     print(f"[*] {target['brand']}...")
     try:
         driver.get(target['url'])
-        time.sleep(random.uniform(3, 5))
-        
-        # FASE 1: Limpieza
+        time.sleep(random.uniform(4, 7))
         handle_popups(driver)
-        driver.execute_script("window.scrollTo(0, 500);") # Scroll para despertar la web
+        
+        # Scroll suave para activar elementos lazy-load (Decathlon)
+        driver.execute_script("window.scrollTo(0, 400);")
+        time.sleep(1)
 
         raw_price = None
 
-        # FASE 2: Búsqueda por Selectores CSS (La forma elegante)
+        # FASE 1: Selector CSS inteligente (Texto O Atributo Content)
         try:
             wait = WebDriverWait(driver, 5)
-            price_elem = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, target['selectors']['price'])))
-            raw_price = price_elem.text
-            print(f"   -> (CSS) Encontrado: {raw_price}")
+            # Buscamos el elemento
+            element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, target['selectors']['price'])))
+            
+            # 1. Intentamos leer el atributo 'content' (Clave para MasMusculo)
+            raw_price = element.get_attribute("content")
+            
+            # 2. Si no hay content, leemos el texto visible (Clave para los demás)
+            if not raw_price:
+                raw_price = element.text
+                
+            print(f"   -> (CSS) Encontrado raw: {raw_price}")
         except:
             print("   -> (CSS) Falló el selector principal.")
 
-        # FASE 3: Búsqueda por "Fuerza Bruta" (Regex en todo el HTML)
-        # Si falló lo anterior, buscamos patrones de dinero en toda la página visible
+        # FASE 2: Fuerza Bruta (Si falla lo anterior)
         if not clean_price(raw_price):
             print("   -> (!) Activando modo Fuerza Bruta...")
             try:
                 body_text = driver.find_element(By.TAG_NAME, "body").text
-                # Busca precios aislados. Ej: "31,99 €" o "€31.99"
                 prices = re.findall(r'(\d+[\.,]\d{2})\s?€|€\s?(\d+[\.,]\d{2})', body_text)
-                
-                # Cogemos el primer precio que parezca lógico (a veces pilla fechas o teléfonos)
                 for p in prices:
                     p_val = p[0] if p[0] else p[1]
                     val = clean_price(p_val)
-                    if val and 10 < val < 100: # Filtro de sentido común (entre 10€ y 100€)
+                    if val and 10 < val < 100:
                         raw_price = p_val
-                        print(f"   -> (Fuerza Bruta) Encontrado posible precio: {raw_price}")
+                        print(f"   -> (Fuerza Bruta) Encontrado: {raw_price}")
                         break
             except Exception as e:
-                print(f"   -> Error en fuerza bruta: {e}")
+                print(f"   -> Error fuerza bruta: {e}")
 
-        # PROCESADO FINAL
         price = clean_price(raw_price)
         
         if price:
@@ -203,15 +202,14 @@ def scrape_site(driver, target):
 
     except Exception as e:
         print(f"   -> CRASH: {str(e)}")
-        driver.save_screenshot(f"crash_{target['brand']}.png")
         return None
 
 def main():
-    print("--- SCRAPER V5 (Modo Combate) ---")
+    print("--- SCRAPER V6 (Soporte Meta Tags) ---")
     try:
         driver = get_driver()
     except Exception as e:
-        print(f"Error crítico iniciando Chrome: {e}")
+        print(f"Error iniciando Chrome: {e}")
         return
 
     results = []
