@@ -1,58 +1,70 @@
 const DATA_URL = 'data.json';
 let allProducts = [];
 
-const ICONS = {
-    trending: '<i data-lucide="trending-up"></i>',
-    fire: '<i data-lucide="flame"></i>',
-    award: '<i data-lucide="award"></i>'
-};
-
+// Inicialización
 document.addEventListener('DOMContentLoaded', () => {
-    lucide.createIcons();
+    // Si usas iconos en la barra de búsqueda, iniciamos Lucide, 
+    // pero en las tarjetas nuevas ya no los usamos para que quede más limpio.
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    
     loadData();
 
+    // Eventos de búsqueda y filtros
     document.getElementById('searchInput').addEventListener('input', (e) => {
-        filterProducts(e.target.value, document.querySelector('.brand-chip.active').innerText);
+        // Asumimos que el filtro de marca "Todo" es el activo por defecto
+        const activeBrand = document.querySelector('.brand-chip.active')?.innerText || 'Todo';
+        filterProducts(e.target.value, activeBrand);
     });
 
     document.getElementById('sortSelect').addEventListener('change', () => {
+        // Volver a renderizar con el orden nuevo
         renderProducts(allProducts); 
     });
 });
 
 async function loadData() {
     try {
+        // Truco del '?v=' para evitar que el navegador guarde el JSON viejo en caché
         const response = await fetch(DATA_URL + '?v=' + new Date().getTime());
         allProducts = await response.json();
-      
+        
+        // Pre-calculamos valores útiles para ordenar
         allProducts = allProducts.map(product => {
+            const weight = product.weight_kg || 1.0;
+            const price = parseFloat(product.price);
+            const purity = product.protein_percent || 0;
+            
+            // Cálculo: Precio por Kilo de producto
+            const pricePerKg = price / weight;
+            
+            // Cálculo: Coste Real por Kilo de Proteína Pura
+            // Si vale 20€ el kilo y tiene 50% pureza, el kilo real cuesta 40€.
+            let realCostPerKg = 999;
+            if (purity > 0) {
+                realCostPerKg = pricePerKg / (purity / 100);
+            }
+
             return {
                 ...product,
-                realPricePer100g: calculateRealPrice(product)
+                pricePerKg: pricePerKg,
+                realCostPerKg: realCostPerKg
             };
         });
 
         renderProducts(allProducts);
-        updateLastUpdate(allProducts);
+        
     } catch (error) {
         console.error("Error cargando datos:", error);
-        document.getElementById('productGrid').innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Cargando datos del mercado...</p>';
+        document.getElementById('products-container').innerHTML = '<p style="text-align:center; width:100%;">Cargando datos del mercado...</p>';
     }
 }
 
-
-function calculateRealPrice(product) {
-    const weightKg = product.weight_kg || 1.0;
-    const totalGrams = weightKg * 1000;
-    const realProteinGrams = totalGrams * (product.protein_percent / 100);
-    if (realProteinGrams <= 0) return 999; 
-    
-    return (product.price / (realProteinGrams / 100)).toFixed(2);
-}
-
+// Función para manejar los botones de marcas (HTML onclick)
 function filterData(brand) {
+    // Gestionar clases activas visuales
     document.querySelectorAll('.brand-chip').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active'); 
+    // Si el evento viene de un click, activamos ese botón
+    if(event && event.target) event.target.classList.add('active'); 
 
     const searchTerm = document.getElementById('searchInput').value;
     filterProducts(searchTerm, brand);
@@ -61,16 +73,17 @@ function filterData(brand) {
 function filterProducts(search, brandFilter) {
     let filtered = allProducts;
 
-    // filtro de marca
+    // 1. Filtro de marca
     if (brandFilter && brandFilter !== 'Todo' && brandFilter !== 'all') {
         filtered = filtered.filter(p => p.brand.toLowerCase() === brandFilter.toLowerCase());
     }
 
-    // filtro de busqudda
+    // 2. Filtro de búsqueda (Nombre o Marca)
     if (search) {
+        const term = search.toLowerCase();
         filtered = filtered.filter(p => 
-            p.name.toLowerCase().includes(search.toLowerCase()) || 
-            p.brand.toLowerCase().includes(search.toLowerCase())
+            p.name.toLowerCase().includes(term) || 
+            p.brand.toLowerCase().includes(term)
         );
     }
 
@@ -78,76 +91,77 @@ function filterProducts(search, brandFilter) {
 }
 
 function renderProducts(products) {
-    const grid = document.getElementById('productGrid');
+    // OJO: En el CSS nuevo el contenedor se llama 'products-container'
+    // Asegúrate de que en tu index.html el div tenga id="products-container"
+    const grid = document.getElementById('products-container'); 
     const sortMode = document.getElementById('sortSelect').value;
 
-    // ordenación dinamica
+    // Lógica de Ordenación
     products.sort((a, b) => {
-        if (sortMode === 'real_value') return a.realPricePer100g - b.realPricePer100g; // Menor a mayor
+        if (sortMode === 'real_value') return a.realCostPerKg - b.realCostPerKg; // El más barato real primero
         if (sortMode === 'price_asc') return a.price - b.price;
         if (sortMode === 'purity_desc') return b.protein_percent - a.protein_percent;
+        return 0;
     });
 
     grid.innerHTML = '';
 
     if (products.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; opacity: 0.6;">No se encontraron proteínas con esos filtros.</p>';
+        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: #64748b;">No hay productos que coincidan.</p>';
         return;
     }
 
-    // encontrar el mejor precio absoluto para ponerle la etiqueta "CHOLLO"
-    const bestPrice = Math.min(...products.map(p => parseFloat(p.realPricePer100g)));
-
+    // Generar el HTML NUEVO (Estilo Tarjeta Limpia)
     products.forEach(product => {
-        // Etiquetas dinámicas
-        let badge = '';
-        if (parseFloat(product.realPricePer100g) === bestPrice) {
-            badge = `<div class="card-badge" style="background:var(--accent); color:#000;">${ICONS.fire} CHOLLO</div>`;
-        } else if (product.protein_percent >= 90) {
-            badge = `<div class="card-badge" style="background:#3b82f6;">${ICONS.award} PREMIUM</div>`;
-        }
+        // Formatear números para que queden bonitos (2 decimales)
+        const displayRealPrice = product.realCostPerKg.toFixed(2);
+        const displayPricePerKg = product.pricePerKg.toFixed(2);
 
-        const imageSrc = product.image || 'img/placeholder.png'; 
-        
-        const card = document.createElement('article');
-        card.className = 'card';
-        card.innerHTML = `
-            ${badge}
-            <div class="img-container">
-                <img src="${imageSrc}" alt="${product.name}" class="card-img" onerror="this.src='https://placehold.co/400x400/1e293b/FFF?text=Protein'">
-            </div>
-            <div class="card-body">
-                <span class="card-brand">${product.brand}</span>
-                <h3 class="card-title">${product.name}</h3>
-                
-                <div class="specs">
-                    <span><i data-lucide="dumbbell"></i> ${product.protein_percent}% Pureza</span>
-                    <span><i data-lucide="weight"></i> ${product.weight_kg}kg</span>
+        // Usamos las imágenes locales si existen, o un placeholder
+        const imageSrc = product.local_image || product.image || 'img/placeholder.png';
+
+        const html = `
+            <article class="product-card">
+                <div class="card-header">
+                    <img src="${imageSrc}" alt="${product.name}" class="product-img" onerror="this.src='img/placeholder.png'">
+                    <div class="product-brand">${product.brand}</div>
+                    <h2 class="product-title">${product.name}</h2>
                 </div>
 
-                <div class="price-box">
-                    <div class="row">
-                        <span class="unit-price">Real: <strong>${product.realPricePer100g}€</strong> /100g prot.</span>
+                <div class="card-body">
+                    <div class="price-section">
+                        <div class="main-price">
+                            ${product.price}<span class="currency">€</span>
+                        </div>
+                        <div class="price-label">Precio Final</div>
                     </div>
-                    <div class="row" style="margin-top:0.5rem; align-items:end;">
-                        <span class="big-price">${product.price}€</span>
-                        <a href="${product.link}" target="_blank" class="btn-buy">VER OFERTA</a>
+
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-value highlight">${displayRealPrice}€</span>
+                            <span class="stat-label">Coste Real / Kg Pureza</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">${displayPricePerKg}€</span>
+                            <span class="stat-label">Precio / Kg Peso</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">${product.protein_percent}%</span>
+                            <span class="stat-label">Pureza</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">${product.weight_kg}kg</span>
+                            <span class="stat-label">Formato</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="card-footer">
+                    <a href="${product.link}" target="_blank" class="btn-buy">VER OFERTA</a>
+                    <div class="update-info">Actualizado: ${product.last_update}</div>
+                </div>
+            </article>
         `;
-        grid.appendChild(card);
+        grid.innerHTML += html;
     });
-
-    lucide.createIcons(); 
-    
-   
-    const countLabel = document.querySelector('.result-count');
-    if(countLabel) countLabel.innerText = `Mostrando ${products.length} productos en tiempo real`;
-}
-
-function updateLastUpdate(data) {
-    if(data.length > 0 && data[0].last_update) {
-        console.log("Última actualización de precios:", data[0].last_update);
-    }
 }
