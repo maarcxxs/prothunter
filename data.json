@@ -8,7 +8,7 @@
         "weight_kg": 1.0,
         "protein_percent": 72,
         "link": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
-        "last_update": "17/02/2026 16:58"
+        "last_update": "17/02/2026 17:05"
     },
     {
         "id": "prozis",
@@ -19,17 +19,17 @@
         "weight_kg": 1.0,
         "protein_percent": 80,
         "link": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
-        "last_update": "17/02/2026 16:59"
+        "last_update": "17/02/2026 17:06"
     },
     {
         "id": "biotechusa",
         "brand": "BioTechUSA",
-        "name": "Iso Whey Zero",
-        "price": 29.9,
+        "name": "Protein Power",
+        "price": 28.9,
         "image": "img/biotech.jpg",
-        "weight_kg": 0.5,
-        "protein_percent": 84,
-        "link": "https://shop.biotechusa.es/products/iso-whey-zero-500-g",
-        "last_update": "17/02/2026 16:59"
+        "weight_kg": 1.0,
+        "protein_percent": 86,
+        "link": "https://shop.biotechusa.es/products/protein-power-1000-g",
+        "last_update": "17/02/2026 17:06"
     }
 ]
