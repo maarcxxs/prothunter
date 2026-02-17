@@ -45,7 +45,7 @@ TARGETS = [
     {
         "brand": "Optimum Nutrition",
         "url": "https://www.masmusculo.com/es/optimum-nutrition/100-whey-gold-standard-2lb-09kg-74210.html#/510-sabor-neutro",
-        "selectors": { "price": ".product-price, span[data-testid='product-price']" },
+        "selectors": { "price": ".current-price .price" },
         "fixed_name": "Gold Standard 100% Whey",
         "default_purity": 79,
         "fixed_weight": 0.9,
@@ -55,7 +55,7 @@ TARGETS = [
     {
         "brand": "Iron Addict Labs",
         "url": "https://www.masmusculo.com/es/iron-addict-labs/addict-whey-2-kg-9214.html#/270-sabor-frutas_del_bosque",
-        "selectors": { "price": ".product-price, span[data-testid='product-price']" },
+        "selectors": { "price": ".current-price .price" },
         "fixed_name": "Addict Whey - 2KG",
         "default_purity": 73,
         "fixed_weight": 2.0,
@@ -75,8 +75,8 @@ TARGETS = [
     {
         "brand": "Decathlon",
         "url": "https://www.decathlon.es/es/p/whey-protein-sabor-neutro-900g/339696/g77m8756406",
-        "selectors": { "price": ".prc__active-price" }, # Decathlon usa esta clase rara
-        "fixed_name": "WHEY PROTEIN SABOR NEUTRO 900g",
+        "selectors": { "price": ".vp-price-amount" }, # Decathlon usa esta clase rara
+        "fixed_name": "WHEY PROTEIN 900g",
         "default_purity": 75,
         "fixed_weight": 0.9,
         "local_image": "img/decathlon.jpg",
