@@ -78,7 +78,7 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-.hero p { color: var(--text-dim); font-size: 1.1rem; }
+.hero p { color: var(--text-dim); font-size: 1.1rem; } 
 
 /* Barra de Marcas (Scroll Horizontal) */
 .brand-scroll {
