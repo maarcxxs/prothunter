@@ -71,7 +71,7 @@ def get_driver():
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--window-size=1920,1080")
-    return uc.Chrome(options=options)
+    return uc.Chrome(options=options, version_main=144)
 
 def clean_price(price_text):
     """Limpia el texto 'Desde 34,99 €' para dejar el float 34.99"""
