@@ -16,7 +16,7 @@ TARGETS = [
         "brand": "MyProtein",
         "url": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
         "selectors": { "price": ".productPrice, .price, [data-test='product-price']" },
-        "fixed_name": "Impact Whey Protein",
+        "fixed_name": "Impact Whey Protein 1KG",
         "default_purity": 72,
         "fixed_weight": 1.0,
         "local_image": "img/myprotein.jpg",
@@ -26,7 +26,7 @@ TARGETS = [
         "brand": "HSN",
         "url": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
         "selectors": { "price": ".price-container .price, .product-price-primary" },
-        "fixed_name": "Evowhey Protein 2.0",
+        "fixed_name": "Evowhey Protein 500g",
         "default_purity": 78,
         "fixed_weight": 0.5,
         "local_image": "img/hsn.jpg",
@@ -44,8 +44,10 @@ TARGETS = [
     },
     {
         "brand": "Optimum Nutrition",
-        "url": "https://www.masmusculo.com/es/optimum-nutrition/100-whey-gold-standard-2lb-09kg-74210.html#/510-sabor-neutro",
-        "selectors": { "price": ".current-price .price" },
+        "url": "https://www.masmusculo.com/es/optimum-nutrition/100-whey-gold-standard-2lb-09kg-74210.html",
+        "selectors": { 
+            "price": "meta[itemprop='price'], #our_price_display" 
+        },
         "fixed_name": "Gold Standard 100% Whey",
         "default_purity": 79,
         "fixed_weight": 0.9,
@@ -54,8 +56,10 @@ TARGETS = [
     },
     {
         "brand": "Iron Addict Labs",
-        "url": "https://www.masmusculo.com/es/iron-addict-labs/addict-whey-2-kg-9214.html#/270-sabor-frutas_del_bosque",
-        "selectors": { "price": ".current-price .price" },
+        "url": "https://www.masmusculo.com/es/iron-addict-labs/addict-whey-2-kg-9214.html",
+        "selectors": { 
+            "price": "meta[itemprop='price'], #our_price_display" 
+        },
         "fixed_name": "Addict Whey - 2KG",
         "default_purity": 73,
         "fixed_weight": 2.0,
@@ -66,7 +70,7 @@ TARGETS = [
         "brand": "BioTechUSA",
         "url": "https://shop.biotechusa.es/products/protein-power-1000-g", 
         "selectors": { "price": "#ProductPrice, .product-single__price" },
-        "fixed_name": "Protein Power",
+        "fixed_name": "Protein Power 1KG",
         "default_purity": 86,
         "fixed_weight": 1.0,
         "local_image": "img/biotech.jpg",
@@ -75,7 +79,10 @@ TARGETS = [
     {
         "brand": "Decathlon",
         "url": "https://www.decathlon.es/es/p/whey-protein-sabor-neutro-900g/339696/g77m8756406",
-        "selectors": { "price": ".vp-price-amount" }, # Decathlon usa esta clase rara
+        "selectors": { 
+            # Añadimos la clase "--large" que se ve en tu captura y clases parciales
+            "price": ".vp-price-amount, .vp-price-amount--large, .prc__active-price" 
+        },
         "fixed_name": "WHEY PROTEIN 900g",
         "default_purity": 75,
         "fixed_weight": 0.9,
