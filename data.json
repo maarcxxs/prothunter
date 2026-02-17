@@ -2,12 +2,34 @@
     {
         "id": "myprotein",
         "brand": "MyProtein",
-        "name": "MyProtein Whey Protein",
+        "name": "Impact Whey Protein",
         "price": 31.99,
-        "image": "img/placeholder.jpg",
+        "image": "img/myprotein.jpg",
         "weight_kg": 1.0,
         "protein_percent": 72,
         "link": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
-        "last_update": "17/02/2026 16:22"
+        "last_update": "17/02/2026 16:58"
+    },
+    {
+        "id": "prozis",
+        "brand": "Prozis",
+        "name": "100% Real Whey Protein",
+        "price": 34.99,
+        "image": "img/prozis.jpg",
+        "weight_kg": 1.0,
+        "protein_percent": 80,
+        "link": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
+        "last_update": "17/02/2026 16:59"
+    },
+    {
+        "id": "biotechusa",
+        "brand": "BioTechUSA",
+        "name": "Iso Whey Zero",
+        "price": 29.9,
+        "image": "img/biotech.jpg",
+        "weight_kg": 0.5,
+        "protein_percent": 84,
+        "link": "https://shop.biotechusa.es/products/iso-whey-zero-500-g",
+        "last_update": "17/02/2026 16:59"
     }
 ]
