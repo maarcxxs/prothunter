@@ -138,10 +138,11 @@ select {
 
 /* --- NUEVA ESTRUCTURA DE TARJETA (Sustituye a la anterior) --- */
 
-.card {
+/* CAMBIO: .card ahora es .product-card para coincidir con el JS */
+.product-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 20px; /* Un poco más redondeada */
+    border-radius: 20px;
     overflow: hidden;
     position: relative;
     display: flex;
@@ -149,7 +150,7 @@ select {
     transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-.card:hover {
+.product-card:hover {
     transform: translateY(-5px);
     border-color: var(--accent);
 }
@@ -366,13 +367,6 @@ details p {
     padding-top: 1rem;
 }
 
-
-@media (max-width: 768px) {
-    .how-it-works { flex-direction: column; gap: 1.5rem; }
-    .step { max-width: 100%; }
-    .seo-header h2 { font-size: 1.5rem; }
-}
-
 /* Footer */
 .main-footer {
     margin-top: 4rem;
@@ -400,12 +394,27 @@ details p {
     .controls-container { flex-direction: column; align-items: stretch; }
     .result-count { display: none; }
     
+    .how-it-works { flex-direction: column; gap: 1.5rem; }
+    .step { max-width: 100%; }
+    .seo-header h2 { font-size: 1.5rem; }
+    .grid-container {
+        grid-template-columns: 1fr; 
+        gap: 1rem;
+    }
+    
+    .search-bar { display: none; } 
+    
+    .hero { padding: 2rem 5%; text-align: left; }
+    
+    .controls-container { flex-direction: column; align-items: stretch; }
+    .result-count { display: none; }
     
     .grid-container {
         grid-template-columns: 1fr; 
         gap: 1rem;
     }
     
-    .card-img { height: 180px; }
+    /* CAMBIO: Usamos el nombre nuevo .product-img */
+    .product-img { height: 180px; }
 }
 
