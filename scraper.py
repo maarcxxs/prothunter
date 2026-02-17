@@ -47,26 +47,34 @@ TARGETS = [
     },
     {
         "brand": "Optimum Nutrition",
+        "category": "protein",
         "url": "https://www.masmusculo.com/es/optimum-nutrition/100-whey-gold-standard-2lb-09kg-74210.html",
-        # SOLUCIÓN: Usamos el selector META que contiene el precio limpio en 'content'
-        "selectors": { "price": "meta[itemprop='price']" },
+        "selectors": { 
+            # ESTRATEGIA MULTI-SELECTOR:
+            # 1. Meta tag oculto (ideal)
+            # 2. Precio visible actual (.current-price)
+            # 3. ID específico del precio (#our_price_display)
+            # 4. Clase genérica (.price)
+            "price": "meta[itemprop='price'], .current-price, #our_price_display, .price" 
+        },
         "fixed_name": "Gold Standard 100% Whey",
         "default_purity": 79,
         "fixed_weight": 0.9,
         "local_image": "img/on.jpg",
-        "category": "protein",
         "affiliate_link": None
     },
     {
         "brand": "Iron Addict Labs",
+        "category": "protein",
         "url": "https://www.masmusculo.com/es/iron-addict-labs/addict-whey-2-kg-9214.html",
-        # SOLUCIÓN: Mismo truco del META tag
-        "selectors": { "price": "meta[itemprop='price']" },
+        "selectors": { 
+            # Mismo blindaje aquí
+            "price": "meta[itemprop='price'], .current-price, #our_price_display, .price" 
+        },
         "fixed_name": "Addict Whey - 2KG",
         "default_purity": 73,
         "fixed_weight": 2.0,
         "local_image": "img/iron.jpg",
-        "category": "protein",
         "affiliate_link": None
     },
     {
