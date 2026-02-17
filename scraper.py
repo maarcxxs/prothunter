@@ -35,7 +35,7 @@ TARGETS = [
     {
         "brand": "Prozis",
         "url": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
-        "selectors": { "price": ".final-price, .product-price, .selling-price" },
+        "selectors": { "price": ".final-price, p.price, .selling-price, .product-price" },
         "fixed_name": "100% Real Whey Protein",
         "default_purity": 80,
         "fixed_weight": 1.0,
@@ -44,12 +44,22 @@ TARGETS = [
     },
     {
         "brand": "Optimum Nutrition",
-        "url": "https://www.optimumnutrition.com/products/gold-standard-100-whey-protein-powder-eu?variant=52105832956171",
+        "url": "https://www.masmusculo.com/es/optimum-nutrition/100-whey-gold-standard-2lb-09kg-74210.html#/510-sabor-neutro",
         "selectors": { "price": ".product-price, span[data-testid='product-price']" },
         "fixed_name": "Gold Standard 100% Whey",
         "default_purity": 79,
         "fixed_weight": 0.9,
         "local_image": "img/on.jpg",
+        "affiliate_link": None
+    },
+    {
+        "brand": "Iron Addict Labs",
+        "url": "https://www.masmusculo.com/es/iron-addict-labs/addict-whey-2-kg-9214.html#/270-sabor-frutas_del_bosque",
+        "selectors": { "price": ".product-price, span[data-testid='product-price']" },
+        "fixed_name": "Addict Whey - 2KG",
+        "default_purity": 73,
+        "fixed_weight": 2.0,
+        "local_image": "img/iron.jpg",
         "affiliate_link": None
     },
     {
@@ -60,6 +70,16 @@ TARGETS = [
         "default_purity": 86,
         "fixed_weight": 1.0,
         "local_image": "img/biotech.jpg",
+        "affiliate_link": None
+    },
+    {
+        "brand": "Decathlon",
+        "url": "https://www.decathlon.es/es/p/whey-protein-sabor-neutro-900g/339696/g77m8756406",
+        "selectors": { "price": ".prc__active-price" }, # Decathlon usa esta clase rara
+        "fixed_name": "WHEY PROTEIN SABOR NEUTRO 900g",
+        "default_purity": 75,
+        "fixed_weight": 0.9,
+        "local_image": "img/decathlon.jpg",
         "affiliate_link": None
     }
 ]
