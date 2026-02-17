@@ -1,24 +1,13 @@
 [
     {
-        "id": "hsn",
-        "brand": "HSN",
-        "name": "EVOWHEY PROTEIN",
-        "price": 11.18,
-        "image": "https://www.hsnstore.com/media/catalog/product/cache/2/image/9df78eab33525d08d6e5fb8d27136e95/e/v/evowhey-protein-500g-b3-size-hsn_1.webp",
-        "weight_kg": 2.0,
-        "protein_percent": 78,
-        "link": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
-        "last_update": "17/02/2026 16:08"
-    },
-    {
-        "id": "biotech_usa",
-        "brand": "Biotech USA",
-        "name": "Protein Power - 1000 g",
-        "price": 28.9,
-        "image": "https://shop.biotechusa.es/cdn/shop/products/ProteinPower_1000g_zsak_bal.png?height=1080&v=1762777356",
+        "id": "myprotein",
+        "brand": "MyProtein",
+        "name": "MyProtein Whey Protein",
+        "price": 31.99,
+        "image": "img/placeholder.jpg",
         "weight_kg": 1.0,
-        "protein_percent": 86,
-        "link": "https://shop.biotechusa.es/products/protein-power-1000-g",
-        "last_update": "17/02/2026 16:09"
+        "protein_percent": 72,
+        "link": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
+        "last_update": "17/02/2026 16:22"
     }
 ]
