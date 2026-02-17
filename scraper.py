@@ -22,7 +22,7 @@ TARGETS = [
     },
     {
         "brand": "HSN",
-        "url": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
+        "url": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein",
         "selectors": { "price": ".price-container .price" },
         "fixed_name": "Evowhey Protein 2.0",
         "default_purity": 78,
@@ -42,7 +42,7 @@ TARGETS = [
     },
     {
         "brand": "Optimum Nutrition",
-        "url": "https://www.optimumnutrition.com/es-es/Products/Protein/Shakes-%26-Powders/Gold-Standard-100%25-Whey-Protein/p/gold-standard-100-whey-protein",
+        "url": "https://www.optimumnutrition.com/products/gold-standard-100-whey-protein-powder-eu?variant=52105832956171",
         "selectors": { "price": ".product-price" },
         "fixed_name": "Gold Standard 100% Whey",
         "default_purity": 79,
@@ -52,11 +52,11 @@ TARGETS = [
     },
     {
         "brand": "BioTechUSA",
-        "url": "https://shop.biotechusa.es/products/iso-whey-zero-500-g", 
+        "url": "https://shop.biotechusa.es/products/protein-power-1000-g", 
         "selectors": { "price": "#ProductPrice" },
-        "fixed_name": "Iso Whey Zero",
-        "default_purity": 84,
-        "fixed_weight": 0.5,
+        "fixed_name": "Protein Power",
+        "default_purity": 86,
+        "fixed_weight": 1.0,
         "local_image": "img/biotech.jpg",
         "affiliate_link": None
     }
