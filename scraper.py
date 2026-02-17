@@ -106,7 +106,7 @@ def scrape_site(driver, target):
         try:
             price_elem = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, target['selectors']['price'])))
             raw_price = price_elem.text
-           '
+           
             if not raw_price:
                 raw_price = price_elem.get_attribute("content") or ""
         except:
