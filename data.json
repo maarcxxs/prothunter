@@ -9,7 +9,7 @@
         "protein_percent": 72,
         "category": "protein",
         "link": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
-        "last_update": "18/02/2026 08:39"
+        "last_update": "19/02/2026 08:37"
     },
     {
         "id": "hsn",
@@ -21,19 +21,7 @@
         "protein_percent": 78,
         "category": "protein",
         "link": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
-        "last_update": "18/02/2026 08:39"
-    },
-    {
-        "id": "prozis",
-        "brand": "Prozis",
-        "name": "100% Real Whey Protein",
-        "price": 36.78,
-        "image": "img/prozis.jpg",
-        "weight_kg": 1.0,
-        "protein_percent": 80,
-        "category": "protein",
-        "link": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
-        "last_update": "18/02/2026 08:39"
+        "last_update": "19/02/2026 08:37"
     },
     {
         "id": "biotechusa",
@@ -45,6 +33,6 @@
         "protein_percent": 86,
         "category": "protein",
         "link": "https://shop.biotechusa.es/products/protein-power-1000-g",
-        "last_update": "18/02/2026 08:40"
+        "last_update": "19/02/2026 08:38"
     }
 ]
