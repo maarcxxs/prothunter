@@ -218,7 +218,8 @@ def scrape_site(driver, target, max_retries=3):
 
 
 def main():
-    print("--- SCRAPER V6 (Soporte Meta Tags) ---")
+    print("--- SCRAPER V6 ---")
+    time.sleep(random.uniform(15, 60))
     try:
         driver = get_driver()
     except Exception as e:
@@ -243,3 +244,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
