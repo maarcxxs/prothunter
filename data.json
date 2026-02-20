@@ -9,7 +9,7 @@
         "protein_percent": 72,
         "category": "protein",
         "link": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
-        "last_update": "20/02/2026 09:51"
+        "last_update": "20/02/2026 15:24"
     },
     {
         "id": "hsn",
@@ -21,19 +21,19 @@
         "protein_percent": 78,
         "category": "protein",
         "link": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
-        "last_update": "20/02/2026 09:51"
+        "last_update": "20/02/2026 15:24"
     },
     {
         "id": "prozis",
         "brand": "Prozis",
         "name": "100% Real Whey Protein",
-        "price": 36.78,
+        "price": 34.99,
         "image": "img/prozis.jpg",
         "weight_kg": 1.0,
         "protein_percent": 80,
         "category": "protein",
         "link": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
-        "last_update": "20/02/2026 09:51"
+        "last_update": "20/02/2026 15:24"
     },
     {
         "id": "biotechusa",
@@ -45,7 +45,7 @@
         "protein_percent": 86,
         "category": "protein",
         "link": "https://shop.biotechusa.es/products/protein-power-1000-g",
-        "last_update": "20/02/2026 09:53"
+        "last_update": "20/02/2026 15:26"
     },
     {
         "id": "decathlon",
@@ -57,6 +57,6 @@
         "protein_percent": 75,
         "category": "protein",
         "link": "https://www.decathlon.es/es/p/whey-protein-sabor-neutro-900g/339696/g77m8756406",
-        "last_update": "20/02/2026 09:53"
+        "last_update": "20/02/2026 15:26"
     }
 ]
