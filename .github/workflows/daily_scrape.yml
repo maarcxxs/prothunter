@@ -2,15 +2,15 @@ name: Actualizar Precios Proteina
 
 on:
   schedule:
-    - cron: '0 8 * * *' # se ejecuta automaticamete todos los dias a las 8 de la mañana
-  workflow_dispatch: # ejecuccion manual
+    - cron: '14 8 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write # permiso para que el bot pueda hacer push
+      contents: write
 
     steps:
       - name: Descargar código del repo
@@ -35,6 +35,7 @@ jobs:
           git add data.json
           git commit -m "Actualización diaria de precios" || exit 0
           git push
+          
       - name: Subir capturas de error
         if: always()
         uses: actions/upload-artifact@v4
