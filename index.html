@@ -61,12 +61,11 @@
     </section>
 
     <nav class="brand-scroll">
-        <button class="brand-chip active" onclick="filterData('all')">Todo</button>
-        
-        <button class="brand-chip" onclick="filterData('protein')">Proteína</button>
-        <button class="brand-chip" onclick="filterData('creatina')">Creatina</button>
-        <button class="brand-chip" onclick="filterData('pre-workout')">Pre-Entreno</button>
-        <button class="brand-chip" onclick="filterData('vitaminas')">Vitaminas</button>
+        <button class="brand-chip active" data-category="all" onclick="filterData('all', event)">Todo</button>
+        <button class="brand-chip" data-category="protein" onclick="filterData('protein', event)">Proteína</button>
+        <button class="brand-chip" data-category="creatina" onclick="filterData('creatina', event)">Creatina</button>
+        <button class="brand-chip" data-category="pre-workout" onclick="filterData('pre-workout', event)">Pre-Entreno</button>
+        <button class="brand-chip" data-category="vitaminas" onclick="filterData('vitaminas', event)">Vitaminas</button>
     </nav>
 
     <div class="controls-container">
