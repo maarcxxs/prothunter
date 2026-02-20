@@ -1,62 +1,62 @@
 [
     {
-        "id": "myprotein",
-        "brand": "MyProtein",
-        "name": "Impact Whey Protein",
-        "price": 31.99,
-        "image": "img/myprotein.jpg",
-        "weight_kg": 1.0,
-        "protein_percent": 72,
-        "category": "protein",
-        "link": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
-        "last_update": "20/02/2026 09:51"
-    },
-    {
         "id": "hsn",
         "brand": "HSN",
-        "name": "Evowhey Protein 2.0",
-        "price": 11.18,
-        "image": "img/hsn.jpg",
+        "name": "CREATINA MONOHIDRATO EN POLVO 150g",
+        "price": 2.37,
+        "image": "img/creatina_hsn.jpg",
+        "weight_kg": 0.15,
+        "protein_percent": 100,
+        "category": "creatina",
+        "link": "https://www.hsnstore.com/marcas/raw-series/creatina-monohidrato-en-polvo",
+        "last_update": "20/02/2026 17:22"
+    },
+    {
+        "id": "myprotein",
+        "brand": "MyProtein",
+        "name": "Creatina Monohidrato 500g",
+        "price": 23.99,
+        "image": "img/creatina_mp.jpg",
         "weight_kg": 0.5,
-        "protein_percent": 78,
+        "protein_percent": 100,
+        "category": "creatina",
+        "link": "https://www.myprotein.es/p/nutricion-deportiva/creatina-monohidrato-en-polvo/10530050/?variation=10530054",
+        "last_update": "20/02/2026 17:22"
+    },
+    {
+        "id": "optimum_nutrition",
+        "brand": "Optimum Nutrition",
+        "name": "Gold Standard 100% Whey",
+        "price": 39.99,
+        "image": "img/on.jpg",
+        "weight_kg": 0.9,
+        "protein_percent": 79,
         "category": "protein",
-        "link": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
-        "last_update": "20/02/2026 09:51"
+        "link": "https://www.masmusculo.com/es/optimum-nutrition/100-whey-gold-standard-2lb-09kg-74210.html",
+        "last_update": "20/02/2026 17:23"
+    },
+    {
+        "id": "iron_addict_labs",
+        "brand": "Iron Addict Labs",
+        "name": "Addict Whey - 2KG",
+        "price": 44.99,
+        "image": "img/iron.jpg",
+        "weight_kg": 2.0,
+        "protein_percent": 73,
+        "category": "protein",
+        "link": "https://www.masmusculo.com/es/iron-addict-labs/addict-whey-2-kg-9214.html",
+        "last_update": "20/02/2026 17:23"
     },
     {
         "id": "prozis",
         "brand": "Prozis",
         "name": "100% Real Whey Protein",
-        "price": 36.78,
+        "price": 34.99,
         "image": "img/prozis.jpg",
         "weight_kg": 1.0,
         "protein_percent": 80,
         "category": "protein",
         "link": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
-        "last_update": "20/02/2026 09:51"
-    },
-    {
-        "id": "biotechusa",
-        "brand": "BioTechUSA",
-        "name": "Protein Power",
-        "price": 28.9,
-        "image": "img/biotech.jpg",
-        "weight_kg": 1.0,
-        "protein_percent": 86,
-        "category": "protein",
-        "link": "https://shop.biotechusa.es/products/protein-power-1000-g",
-        "last_update": "20/02/2026 09:53"
-    },
-    {
-        "id": "decathlon",
-        "brand": "Decathlon",
-        "name": "WHEY PROTEIN 900g",
-        "price": 28.99,
-        "image": "img/decathlon.jpg",
-        "weight_kg": 0.9,
-        "protein_percent": 75,
-        "category": "protein",
-        "link": "https://www.decathlon.es/es/p/whey-protein-sabor-neutro-900g/339696/g77m8756406",
-        "last_update": "20/02/2026 09:53"
+        "last_update": "20/02/2026 17:23"
     }
 ]

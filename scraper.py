@@ -13,36 +13,25 @@ from selenium.webdriver.support import expected_conditions as EC
 # --- CONFIGURACIÓN DE OBJETIVOS ---
 TARGETS = [
     {
-        "brand": "MyProtein",
-        "url": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
-        "selectors": { "price": ".productPrice, .price, [data-test='product-price']" },
-        "fixed_name": "Impact Whey Protein",
-        "default_purity": 72,
-        "fixed_weight": 1.0,
-        "local_image": "img/myprotein.jpg",
-        "category": "protein",
-        "affiliate_link": None
-    },
-    {
         "brand": "HSN",
-        "url": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
-        "selectors": { "price": ".price-container .price, .product-price-primary" },
-        "fixed_name": "Evowhey Protein 2.0",
-        "default_purity": 78,
-        "fixed_weight": 0.5,
-        "local_image": "img/hsn.jpg",
-        "category": "protein",
+        "category": "creatina",
+        "url": "https://www.hsnstore.com/marcas/raw-series/creatina-monohidrato-en-polvo",
+        "selectors": { "price": ".final-price, .price-container .price, .product-price-primary" },
+        "fixed_name": "CREATINA MONOHIDRATO EN POLVO 150g",
+        "default_purity": 100,
+        "fixed_weight": 0.150,
+        "local_image": "img/creatina_hsn.jpg",
         "affiliate_link": None
     },
     {
-        "brand": "Prozis",
-        "category": "protein",
-        "url": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
-        "selectors": { "price": "meta[itemprop='price'], [data-test='final-price']" },
-        "fixed_name": "100% Real Whey Protein",
-        "default_purity": 80,
-        "fixed_weight": 1.0,
-        "local_image": "img/prozis.jpg",
+        "brand": "MyProtein",
+        "category": "creatina",
+        "url": "https://www.myprotein.es/p/nutricion-deportiva/creatina-monohidrato-en-polvo/10530050/?variation=10530054",
+        "selectors": { "price": ".productPrice, .price, [data-test='product-price']" },
+        "fixed_name": "Creatina Monohidrato 500g",
+        "default_purity": 100,
+        "fixed_weight": 0.5,
+        "local_image": "img/creatina_mp.jpg",
         "affiliate_link": None
     },
     {
@@ -50,7 +39,7 @@ TARGETS = [
         "category": "protein",
         "url": "https://www.masmusculo.com/es/optimum-nutrition/100-whey-gold-standard-2lb-09kg-74210.html",
         "selectors": { 
-            "price": "span.price[itemprop='price'], div.current-price span.price" 
+            "price": "#our_price_display, .current-price .price, span[itemprop='price']" 
         },
         "fixed_name": "Gold Standard 100% Whey",
         "default_purity": 79,
@@ -63,7 +52,7 @@ TARGETS = [
         "category": "protein",
         "url": "https://www.masmusculo.com/es/iron-addict-labs/addict-whey-2-kg-9214.html",
         "selectors": { 
-            "price": "span.price[itemprop='price'], div.current-price span.price" 
+            "price": "#our_price_display, .current-price .price, span[itemprop='price']" 
         },
         "fixed_name": "Addict Whey - 2KG",
         "default_purity": 73,
@@ -72,28 +61,18 @@ TARGETS = [
         "affiliate_link": None
     },
     {
-        "brand": "BioTechUSA",
-        "url": "https://shop.biotechusa.es/products/protein-power-1000-g", 
-        "selectors": { "price": "#ProductPrice, .product-single__price" },
-        "fixed_name": "Protein Power",
-        "default_purity": 86,
-        "fixed_weight": 1.0,
-        "local_image": "img/biotech.jpg",
+        "brand": "Prozis",
         "category": "protein",
+        "url": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
+        "selectors": { 
+            "price": "span.final-price, div[data-test='final-price'], span.selling-price" 
+        },
+        "fixed_name": "100% Real Whey Protein",
+        "default_purity": 80,
+        "fixed_weight": 1.0,
+        "local_image": "img/prozis.jpg",
         "affiliate_link": None
     },
-    {
-        "brand": "Decathlon",
-        "url": "https://www.decathlon.es/es/p/whey-protein-sabor-neutro-900g/339696/g77m8756406",
-        # Selectores corregidos según tu captura
-        "selectors": { "price": ".vp-price-amount, .vp-price-amount--large" },
-        "fixed_name": "WHEY PROTEIN 900g",
-        "default_purity": 75,
-        "fixed_weight": 0.9,
-        "local_image": "img/decathlon.jpg",
-        "category": "protein",
-        "affiliate_link": None
-    }
 ]
 
 def get_driver():
@@ -111,7 +90,7 @@ def get_driver():
         return uc.Chrome(options=options, version_main=144)
     else: 
         print("--- MODO LOCAL (Windows) ---")
-        return uc.Chrome(options=options)
+        return uc.Chrome(options=options, version_main=145)
 
 def clean_price(price_text):
     if not price_text: return None

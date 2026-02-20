@@ -93,77 +93,42 @@ function filterProducts(search, categoryFilter) {
 }
 
 function renderProducts(products) {
-    // OJO: En el CSS nuevo el contenedor se llama 'products-container'
-    // Asegúrate de que en tu index.html el div tenga id="products-container"
-    const grid = document.getElementById('products-container'); 
-    const sortMode = document.getElementById('sortSelect').value;
+    const container = document.getElementById('products-container');
+    container.innerHTML = '';
 
-    // Lógica de Ordenación
-    products.sort((a, b) => {
-        if (sortMode === 'real_value') return a.realCostPerKg - b.realCostPerKg; // El más barato real primero
-        if (sortMode === 'price_asc') return a.price - b.price;
-        if (sortMode === 'purity_desc') return b.protein_percent - a.protein_percent;
-        return 0;
-    });
-
-    grid.innerHTML = '';
-
-    if (products.length === 0) {
-        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1; color: #64748b;">No hay productos que coincidan.</p>';
-        return;
-    }
-
-    // Generar el HTML NUEVO (Estilo Tarjeta Limpia)
     products.forEach(product => {
-        // Formatear números para que queden bonitos (2 decimales)
-        const displayRealPrice = product.realCostPerKg.toFixed(2);
-        const displayPricePerKg = product.pricePerKg.toFixed(2);
+        let statsHTML = '';
+        
+        if (product.category === 'protein') {
+            const purePrice = (product.price / (product.weight_kg * (product.protein_percent / 100))).toFixed(2);
+            statsHTML = `
+                <div class="stat"><span>Pureza:</span> ${product.protein_percent}%</div>
+                <div class="stat"><span>Precio/Kg (Puro):</span> ${purePrice}€</div>
+            `;
+        } else if (product.category === 'creatina') {
+            const pricePerKg = (product.price / product.weight_kg).toFixed(2);
+            statsHTML = `
+                <div class="stat"><span>Tipo:</span> Monohidrato</div>
+                <div class="stat"><span>Precio/Kg:</span> ${pricePerKg}€</div>
+            `;
+        }
 
-        // Usamos las imágenes locales si existen, o un placeholder
-        const imageSrc = product.local_image || product.image || 'img/placeholder.png';
-
-        const html = `
-            <article class="product-card">
-                <div class="card-header">
-                    <img src="${imageSrc}" alt="${product.name}" class="product-img" onerror="this.src='img/placeholder.png'">
-                    <div class="product-brand">${product.brand}</div>
-                    <h2 class="product-title">${product.name}</h2>
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <div class="card-info">
+                <h3>${product.brand}</h3>
+                <p class="product-name">${product.name}</p>
+                <div class="price-tag">${product.price}€</div>
+                <div class="stats-container">
+                    ${statsHTML}
                 </div>
-
-                <div class="card-body">
-                    <div class="price-section">
-                        <div class="main-price">
-                            ${product.price}<span class="currency">€</span>
-                        </div>
-                        <div class="price-label">Precio Final</div>
-                    </div>
-
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <span class="stat-value highlight">${displayRealPrice}€</span>
-                            <span class="stat-label">Coste Real / Kg Pureza</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">${displayPricePerKg}€</span>
-                            <span class="stat-label">Precio / Kg Peso</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">${product.protein_percent}%</span>
-                            <span class="stat-label">Pureza</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">${product.weight_kg}kg</span>
-                            <span class="stat-label">Formato</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-footer">
-                    <a href="${product.link}" target="_blank" class="btn-buy">VER OFERTA</a>
-                    <div class="update-info">Actualizado: ${product.last_update}</div>
-                </div>
-            </article>
+            </div>
+            <div class="card-footer">
+                <a href="${product.link}" target="_blank" class="btn-buy">VER OFERTA</a>
+            </div>
         `;
-        grid.innerHTML += html;
+        container.appendChild(card);
     });
 }
