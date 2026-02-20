@@ -1,47 +1,36 @@
 const DATA_URL = 'data.json';
 let allProducts = [];
 
-// Inicialización
 document.addEventListener('DOMContentLoaded', () => {
-    // Si usas iconos en la barra de búsqueda, iniciamos Lucide, 
-    // pero en las tarjetas nuevas ya no los usamos para que quede más limpio.
     if (typeof lucide !== 'undefined') lucide.createIcons();
     
     loadData();
 
-    // Eventos de búsqueda y filtros
     document.getElementById('searchInput').addEventListener('input', (e) => {
-        // Asumimos que el filtro de marca "Todo" es el activo por defecto
         const activeBrand = document.querySelector('.brand-chip.active')?.innerText || 'Todo';
         filterProducts(e.target.value, activeBrand);
     });
 
     document.getElementById('sortSelect').addEventListener('change', () => {
-        // Volver a renderizar con el orden nuevo
         renderProducts(allProducts); 
     });
 });
 
 async function loadData() {
     try {
-        // Truco del '?v=' para evitar que el navegador guarde el JSON viejo en caché
         const response = await fetch(DATA_URL + '?v=' + new Date().getTime());
-        allProducts = await response.json();
+        let rawData = await response.json();
         
-        // Pre-calculamos valores útiles para ordenar
-        allProducts = allProducts.map(product => {
+        allProducts = rawData.map(product => {
             const weight = product.weight_kg || 1.0;
             const price = parseFloat(product.price);
             const purity = product.protein_percent || 0;
             
-            // Cálculo: Precio por Kilo de producto
-            const pricePerKg = price / weight;
+            const pricePerKg = (price / weight).toFixed(2);
             
-            // Cálculo: Coste Real por Kilo de Proteína Pura
-            // Si vale 20€ el kilo y tiene 50% pureza, el kilo real cuesta 40€.
-            let realCostPerKg = 999;
+            let realCostPerKg = 'N/A';
             if (purity > 0) {
-                realCostPerKg = pricePerKg / (purity / 100);
+                realCostPerKg = (price / (weight * (purity / 100))).toFixed(2);
             }
 
             return {
@@ -54,16 +43,13 @@ async function loadData() {
         renderProducts(allProducts);
         
     } catch (error) {
-        console.error("Error cargando datos:", error);
+        console.error(error);
         document.getElementById('products-container').innerHTML = '<p style="text-align:center; width:100%;">Cargando datos del mercado...</p>';
     }
 }
 
-// Función para manejar los botones de marcas (HTML onclick)
-function filterData(brand) {
-    // Gestionar clases activas visuales
+function filterData(brand, event) {
     document.querySelectorAll('.brand-chip').forEach(btn => btn.classList.remove('active'));
-    // Si el evento viene de un click, activamos ese botón
     if(event && event.target) event.target.classList.add('active'); 
 
     const searchTerm = document.getElementById('searchInput').value;
@@ -73,17 +59,14 @@ function filterData(brand) {
 function filterProducts(search, categoryFilter) {
     let filtered = allProducts;
 
-    // 1. FILTRO POR CATEGORÍA (Los botones)
-    // Si el filtro no es 'all' ni 'Todo', filtramos por la etiqueta 'category' del JSON
     if (categoryFilter && categoryFilter !== 'Todo' && categoryFilter !== 'all') {
         filtered = filtered.filter(p => p.category.toLowerCase() === categoryFilter.toLowerCase());
     }
 
-    // 2. FILTRO DE BÚSQUEDA (Barra de texto)
-    // Aquí seguimos buscando por Nombre o Marca para que el usuario pueda escribir "MyProtein"
     if (search) {
         const term = search.toLowerCase();
         filtered = filtered.filter(p => 
+            // Corregido: volvemos a usar 'name' en lugar de 'fixed_name'
             p.name.toLowerCase().includes(term) || 
             p.brand.toLowerCase().includes(term)
         );
@@ -100,23 +83,21 @@ function renderProducts(products) {
         let statsHTML = '';
         
         if (product.category === 'protein') {
-            const purePrice = (product.price / (product.weight_kg * (product.protein_percent / 100))).toFixed(2);
             statsHTML = `
                 <div class="stat"><span>Pureza:</span> ${product.protein_percent}%</div>
-                <div class="stat"><span>Precio/Kg (Puro):</span> ${purePrice}€</div>
+                <div class="stat"><span>Precio/Kg (Puro):</span> ${product.realCostPerKg}€</div>
             `;
         } else if (product.category === 'creatina') {
-            const pricePerKg = (product.price / product.weight_kg).toFixed(2);
             statsHTML = `
                 <div class="stat"><span>Tipo:</span> Monohidrato</div>
-                <div class="stat"><span>Precio/Kg:</span> ${pricePerKg}€</div>
+                <div class="stat"><span>Precio/Kg:</span> ${product.pricePerKg}€</div>
             `;
         }
 
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <img src="${product.image}" alt="${product.name}">
+            <img src="${product.image}" alt="${product.name}" onerror="this.src='img/placeholder.jpg'">
             <div class="card-info">
                 <h3>${product.brand}</h3>
                 <p class="product-name">${product.name}</p>

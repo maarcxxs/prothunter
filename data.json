@@ -1,5 +1,17 @@
 [
     {
+        "id": "myprotein",
+        "brand": "MyProtein",
+        "name": "Impact Whey Protein",
+        "price": 31.99,
+        "image": "img/myprotein.jpg",
+        "weight_kg": 1.0,
+        "protein_percent": 72,
+        "category": "protein",
+        "link": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
+        "last_update": "20/02/2026 15:24"
+    },
+    {
         "id": "hsn",
         "brand": "HSN",
         "name": "CREATINA MONOHIDRATO EN POLVO 150g",
@@ -32,20 +44,8 @@
         "weight_kg": 0.9,
         "protein_percent": 79,
         "category": "protein",
-        "link": "https://www.masmusculo.com/es/optimum-nutrition/100-whey-gold-standard-2lb-09kg-74210.html",
-        "last_update": "20/02/2026 17:23"
-    },
-    {
-        "id": "iron_addict_labs",
-        "brand": "Iron Addict Labs",
-        "name": "Addict Whey - 2KG",
-        "price": 44.99,
-        "image": "img/iron.jpg",
-        "weight_kg": 2.0,
-        "protein_percent": 73,
-        "category": "protein",
-        "link": "https://www.masmusculo.com/es/iron-addict-labs/addict-whey-2-kg-9214.html",
-        "last_update": "20/02/2026 17:23"
+        "link": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
+        "last_update": "20/02/2026 15:24"
     },
     {
         "id": "prozis",
@@ -57,6 +57,30 @@
         "protein_percent": 80,
         "category": "protein",
         "link": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
-        "last_update": "20/02/2026 17:23"
+        "last_update": "20/02/2026 15:24"
+    },
+    {
+        "id": "biotechusa",
+        "brand": "BioTechUSA",
+        "name": "Protein Power",
+        "price": 28.9,
+        "image": "img/biotech.jpg",
+        "weight_kg": 1.0,
+        "protein_percent": 86,
+        "category": "protein",
+        "link": "https://shop.biotechusa.es/products/protein-power-1000-g",
+        "last_update": "20/02/2026 15:26"
+    },
+    {
+        "id": "decathlon",
+        "brand": "Decathlon",
+        "name": "WHEY PROTEIN 900g",
+        "price": 28.99,
+        "image": "img/decathlon.jpg",
+        "weight_kg": 0.9,
+        "protein_percent": 75,
+        "category": "protein",
+        "link": "https://www.decathlon.es/es/p/whey-protein-sabor-neutro-900g/339696/g77m8756406",
+        "last_update": "20/02/2026 15:26"
     }
 ]
