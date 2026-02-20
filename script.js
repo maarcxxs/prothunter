@@ -82,7 +82,7 @@ function renderProducts(products) {
     products.forEach(product => {
         let statsHTML = '';
         
-        // Lógica para Proteína
+        // Configuración de estadísticas según categoría
         if (product.category === 'protein') {
             statsHTML = `
                 <div class="stat-item">
@@ -94,9 +94,7 @@ function renderProducts(products) {
                     <span class="stat-label">Kg Puro</span>
                 </div>
             `;
-        } 
-        // Lógica para Creatina
-        else if (product.category === 'creatina') {
+        } else if (product.category === 'creatina') {
             statsHTML = `
                 <div class="stat-item">
                     <span class="stat-value highlight">Mono</span>
@@ -117,12 +115,12 @@ function renderProducts(products) {
             </div>
             
             <div class="card-body">
-                <span class="card-brand">${product.brand}</span>
+                <div class="card-brand">${product.brand}</div>
                 <h3 class="card-title">${product.name}</h3>
                 
                 <div class="price-section">
                     <div class="main-price">${product.price}<span class="currency">€</span></div>
-                    <div class="price-label">Precio actual</div>
+                    <div class="price-label">MEJOR PRECIO HOY</div>
                 </div>
 
                 <div class="stats-grid">
@@ -131,8 +129,11 @@ function renderProducts(products) {
             </div>
 
             <div class="card-footer">
-                <a href="${product.url}" target="_blank" class="btn-buy">VER OFERTA</a>
-                <div class="update-info">Actualizado: ${product.last_update || 'Hoy'}</div>
+                <a href="${product.link}" target="_blank" class="btn-buy">IR A LA OFERTA</a>
+                <div class="update-info">
+                    <i class="lucide-refresh-cw" style="width:10px; display:inline-block;"></i> 
+                    Verificado: ${product.last_update ? product.last_update.split(' ')[0] : 'Hoy'}
+                </div>
             </div>
         `;
         container.appendChild(card);
