@@ -13,6 +13,28 @@ from selenium.webdriver.support import expected_conditions as EC
 # --- CONFIGURACIÓN DE OBJETIVOS ---
 TARGETS = [
     {
+        "brand": "MyProtein",
+        "url": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
+        "selectors": { "price": ".productPrice, .price, [data-test='product-price']" },
+        "fixed_name": "Impact Whey Protein 1KG",
+        "default_purity": 72,
+        "fixed_weight": 1.0,
+        "local_image": "img/myprotein.jpg",
+        "category": "protein",
+        "affiliate_link": None
+    },
+    {
+        "brand": "HSN",
+        "url": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
+        "selectors": { "price": ".price-container .price, .product-price-primary" },
+        "fixed_name": "Evowhey Protein 0,5KG",
+        "default_purity": 78,
+        "fixed_weight": 0.5,
+        "local_image": "img/hsn.jpg",
+        "category": "protein",
+        "affiliate_link": None
+    },
+    {
         "brand": "HSN",
         "category": "creatina",
         "url": "https://www.hsnstore.com/marcas/raw-series/creatina-monohidrato-en-polvo",
@@ -44,7 +66,7 @@ TARGETS = [
         "fixed_name": "Gold Standard 100% Whey",
         "default_purity": 79,
         "fixed_weight": 0.9,
-        "local_image": "img/on.jpg",
+        "local_image": "img/optimum.jpg",
         "affiliate_link": None
     },
     {
@@ -73,6 +95,28 @@ TARGETS = [
         "local_image": "img/prozis.jpg",
         "affiliate_link": None
     },
+    {
+        "brand": "BioTechUSA",
+        "url": "https://shop.biotechusa.es/products/protein-power-1000-g", 
+        "selectors": { "price": "#ProductPrice, .product-single__price" },
+        "fixed_name": "Protein Power",
+        "default_purity": 86,
+        "fixed_weight": 1.0,
+        "local_image": "img/biotech.jpg",
+        "category": "protein",
+        "affiliate_link": None
+    },
+    {
+        "brand": "Decathlon",
+        "url": "https://www.decathlon.es/es/p/whey-protein-sabor-neutro-900g/339696/g77m8756406",
+        "selectors": { "price": ".vp-price-amount, .vp-price-amount--large" },
+        "fixed_name": "WHEY PROTEIN 900g",
+        "default_purity": 75,
+        "fixed_weight": 0.9,
+        "local_image": "img/decathlon.jpg",
+        "category": "protein",
+        "affiliate_link": None
+    }
 ]
 
 def get_driver():

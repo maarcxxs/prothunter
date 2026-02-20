@@ -109,23 +109,27 @@ function renderProducts(products) {
     }
 
     products.forEach(product => {
-        // Formateo de las estadísticas manteniendo tu diseño pro
         let statsHTML = '';
+        let gridStyle = '';
+        
         if (product.category === 'protein') {
             statsHTML = `
                 <div class="stat-item"><span class="stat-value highlight">${product.protein_percent}%</span><span class="stat-label">Pureza</span></div>
+                <div class="stat-item"><span class="stat-value">${product.pricePerKg}€</span><span class="stat-label">Precio/Kg</span></div>
                 <div class="stat-item"><span class="stat-value">${product.realCostPerKg}€</span><span class="stat-label">Kg Puro</span></div>
             `;
+            gridStyle = 'grid-template-columns: repeat(3, 1fr);';
         } else if (product.category === 'creatina') {
             statsHTML = `
                 <div class="stat-item"><span class="stat-value highlight">Mono</span><span class="stat-label">Tipo</span></div>
                 <div class="stat-item"><span class="stat-value">${product.pricePerKg}€</span><span class="stat-label">Precio/Kg</span></div>
             `;
+            gridStyle = 'grid-template-columns: repeat(2, 1fr);';
         } else {
-            // Por si metes vitaminas o pre-entrenos en el futuro
             statsHTML = `
                 <div class="stat-item"><span class="stat-value highlight">${product.pricePerKg}€</span><span class="stat-label">Precio/Kg</span></div>
             `;
+            gridStyle = 'grid-template-columns: 1fr;';
         }
 
         const card = document.createElement('div');
@@ -139,7 +143,7 @@ function renderProducts(products) {
                     <div class="main-price">${product.price}<span class="currency">€</span></div>
                     <div class="price-label">MEJOR PRECIO HOY</div>
                 </div>
-                <div class="stats-grid">${statsHTML}</div>
+                <div class="stats-grid" style="${gridStyle}">${statsHTML}</div>
             </div>
             <div class="card-footer">
                 <a href="${product.link}" target="_blank" class="btn-buy">IR A LA OFERTA</a>
@@ -152,6 +156,5 @@ function renderProducts(products) {
         container.appendChild(card);
     });
     
-    // Recargar los iconos de Lucide por si se han generado nuevos
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
