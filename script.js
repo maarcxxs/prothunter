@@ -48,12 +48,64 @@ async function loadData() {
     }
 }
 
+// Función maestra que aplica todos los filtros en cascada
+function updateDisplay() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const activeBrandChip = document.querySelector('.brand-chip.active');
+    const categoryFilter = activeBrandChip ? activeBrandChip.innerText : 'Todo';
+    const sortBy = document.getElementById('sortSelect').value;
+
+    // 1. FILTRADO
+    let filtered = allProducts.filter(p => {
+        const matchesSearch = p.name.toLowerCase().includes(searchTerm) || 
+                              p.brand.toLowerCase().includes(searchTerm);
+        
+        const matchesCategory = (categoryFilter === 'Todo') || 
+                                (p.category.toLowerCase() === categoryFilter.toLowerCase());
+        
+        return matchesSearch && matchesCategory;
+    });
+
+    // 2. ORDENACIÓN (Aquí es donde arreglamos lo de la pureza)
+    filtered.sort((a, b) => {
+        switch (sortBy) {
+            case 'price-asc':
+                return parseFloat(a.price) - parseFloat(b.price);
+            case 'price-desc':
+                return parseFloat(b.price) - parseFloat(a.price);
+            case 'purity-desc':
+                // Forzamos que la creatina (0 pureza) vaya al final
+                return (b.protein_percent || 0) - (a.protein_percent || 0);
+            case 'kg-price-asc':
+                return parseFloat(a.pricePerKg) - parseFloat(b.pricePerKg);
+            default:
+                return 0;
+        }
+    });
+
+    renderProducts(filtered);
+}
+
+// Modifica los event listeners para que todos llamen a updateDisplay
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+    loadData();
+
+    document.getElementById('searchInput').addEventListener('input', updateDisplay);
+    document.getElementById('sortSelect').addEventListener('change', updateDisplay);
+});
+
+// Modifica la función de los botones de categoría
 function filterData(brand, event) {
     document.querySelectorAll('.brand-chip').forEach(btn => btn.classList.remove('active'));
-    if(event && event.target) event.target.classList.add('active'); 
-
-    const searchTerm = document.getElementById('searchInput').value;
-    filterProducts(searchTerm, brand);
+    if (event && event.target) {
+        event.target.classList.add('active');
+    } else {
+        // Por si se llama programáticamente
+        const chips = document.querySelectorAll('.brand-chip');
+        chips.forEach(c => { if(c.innerText === brand) c.classList.add('active'); });
+    }
+    updateDisplay();
 }
 
 function filterProducts(search, categoryFilter) {
