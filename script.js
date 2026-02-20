@@ -82,32 +82,57 @@ function renderProducts(products) {
     products.forEach(product => {
         let statsHTML = '';
         
+        // Lógica para Proteína
         if (product.category === 'protein') {
             statsHTML = `
-                <div class="stat"><span>Pureza:</span> ${product.protein_percent}%</div>
-                <div class="stat"><span>Precio/Kg (Puro):</span> ${product.realCostPerKg}€</div>
+                <div class="stat-item">
+                    <span class="stat-value highlight">${product.protein_percent}%</span>
+                    <span class="stat-label">Pureza</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">${product.realCostPerKg}€</span>
+                    <span class="stat-label">Kg Puro</span>
+                </div>
             `;
-        } else if (product.category === 'creatina') {
+        } 
+        // Lógica para Creatina
+        else if (product.category === 'creatina') {
             statsHTML = `
-                <div class="stat"><span>Tipo:</span> Monohidrato</div>
-                <div class="stat"><span>Precio/Kg:</span> ${product.pricePerKg}€</div>
+                <div class="stat-item">
+                    <span class="stat-value highlight">Mono</span>
+                    <span class="stat-label">Tipo</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">${product.pricePerKg}€</span>
+                    <span class="stat-label">Precio/Kg</span>
+                </div>
             `;
         }
 
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" onerror="this.src='img/placeholder.jpg'">
-            <div class="card-info">
-                <h3>${product.brand}</h3>
-                <p class="product-name">${product.name}</p>
-                <div class="price-tag">${product.price}€</div>
-                <div class="stats-container">
+            <div class="card-header">
+                <img src="${product.image}" alt="${product.name}" class="product-img" onerror="this.src='img/placeholder.jpg'">
+            </div>
+            
+            <div class="card-body">
+                <span class="card-brand">${product.brand}</span>
+                <h3 class="card-title">${product.name}</h3>
+                
+                <div class="price-section">
+                    <div class="main-price">${product.price}<span class="currency">€</span></div>
+                    <div class="price-label">Precio actual</div>
+                </div>
+
+                <div class="stats-grid">
                     ${statsHTML}
                 </div>
             </div>
+
             <div class="card-footer">
-                <a href="${product.link}" target="_blank" class="btn-buy">VER OFERTA</a>
+                <a href="${product.url}" target="_blank" class="btn-buy">VER OFERTA</a>
+                <div class="update-info">Actualizado: ${product.last_update || 'Hoy'}</div>
             </div>
         `;
         container.appendChild(card);
