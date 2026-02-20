@@ -50,12 +50,7 @@ TARGETS = [
         "category": "protein",
         "url": "https://www.masmusculo.com/es/optimum-nutrition/100-whey-gold-standard-2lb-09kg-74210.html",
         "selectors": { 
-            # ESTRATEGIA MULTI-SELECTOR:
-            # 1. Meta tag oculto (ideal)
-            # 2. Precio visible actual (.current-price)
-            # 3. ID específico del precio (#our_price_display)
-            # 4. Clase genérica (.price)
-            "price": "meta[itemprop='price'], .current-price, #our_price_display, .price" 
+            "price": "span.price[itemprop='price'], div.current-price span.price" 
         },
         "fixed_name": "Gold Standard 100% Whey",
         "default_purity": 79,
@@ -68,8 +63,7 @@ TARGETS = [
         "category": "protein",
         "url": "https://www.masmusculo.com/es/iron-addict-labs/addict-whey-2-kg-9214.html",
         "selectors": { 
-            # Mismo blindaje aquí
-            "price": "meta[itemprop='price'], .current-price, #our_price_display, .price" 
+            "price": "span.price[itemprop='price'], div.current-price span.price" 
         },
         "fixed_name": "Addict Whey - 2KG",
         "default_purity": 73,
