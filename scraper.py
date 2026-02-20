@@ -149,79 +149,77 @@ def handle_popups(driver):
     except:
         pass
 
-def scrape_site(driver, target):
+def scrape_site(driver, target, max_retries=3):
     print(f"[*] {target['brand']}...")
-    try:
-        driver.get(target['url'])
-        time.sleep(random.uniform(4, 7))
-        handle_popups(driver)
-        
-        # Scroll suave para activar elementos lazy-load (Decathlon)
-        driver.execute_script("window.scrollTo(0, 400);")
-        time.sleep(1)
-
-        raw_price = None
-
-        # FASE 1: Selector CSS inteligente (Texto O Atributo Content)
+    
+    for attempt in range(max_retries):
         try:
-            wait = WebDriverWait(driver, 5)
-            # Buscamos el elemento
-            element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, target['selectors']['price'])))
+            driver.get(target['url'])
+            time.sleep(random.uniform(4, 7))
+            handle_popups(driver)
             
-            # 1. Intentamos leer el atributo 'content' (Clave para MasMusculo)
-            raw_price = element.get_attribute("content")
-            
-            # 2. Si no hay content, leemos el texto visible (Clave para los demás)
-            if not raw_price:
-                raw_price = element.text
-                
-            print(f"   -> (CSS) Encontrado raw: {raw_price}")
-        except:
-            print("   -> (CSS) Falló el selector principal.")
+            driver.execute_script("window.scrollTo(0, 400);")
+            time.sleep(1)
 
-        # FASE 2: Fuerza Bruta (Si falla lo anterior)
-        if not clean_price(raw_price):
-            print("   -> (!) Activando modo Fuerza Bruta...")
+            raw_price = None
+
             try:
-                body_text = driver.find_element(By.TAG_NAME, "body").text
-                prices = re.findall(r'(\d+[\.,]\d{2})\s?€|€\s?(\d+[\.,]\d{2})', body_text)
-                for p in prices:
-                    p_val = p[0] if p[0] else p[1]
-                    val = clean_price(p_val)
-                    if val and 10 < val < 100:
-                        raw_price = p_val
-                        print(f"   -> (Fuerza Bruta) Encontrado: {raw_price}")
-                        break
-            except Exception as e:
-                print(f"   -> Error fuerza bruta: {e}")
+                wait = WebDriverWait(driver, 5)
+                element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, target['selectors']['price'])))
+                
+                raw_price = element.get_attribute("content")
+                if not raw_price:
+                    raw_price = element.text
+                    
+                print(f"   -> (CSS) Encontrado raw: {raw_price}")
+            except:
+                pass
 
-        price = clean_price(raw_price)
-        
-        if price:
-            print(f"   -> ÉXITO: {price}€")
-            return {
-                "id": target['brand'].lower().replace(" ", "_"),
-                "brand": target['brand'],
-                "name": target['fixed_name'],
-                "price": price,
-                "image": target['local_image'],
-                "weight_kg": target['fixed_weight'],
-                "protein_percent": target['default_purity'],
-                "category": target['category'],
-                "link": target.get('affiliate_link') or target['url'],
-                "last_update": datetime.now().strftime("%d/%m/%Y %H:%M")
-            }
-        else:
-            print(f"   -> FALLO: Guardando captura...")
-            driver.save_screenshot(f"error_{target['brand']}.png")
-            return None
+            if not clean_price(raw_price):
+                try:
+                    body_text = driver.find_element(By.TAG_NAME, "body").text
+                    prices = re.findall(r'(\d+[\.,]\d{2})\s?€|€\s?(\d+[\.,]\d{2})', body_text)
+                    for p in prices:
+                        p_val = p[0] if p[0] else p[1]
+                        val = clean_price(p_val)
+                        if val and 10 < val < 100:
+                            raw_price = p_val
+                            break
+                except:
+                    pass
 
-    except Exception as e:
-        print(f"   -> CRASH: {str(e)}")
-        return None
+            price = clean_price(raw_price)
+            
+            if price:
+                print(f"   -> ÉXITO: {price}€")
+                return {
+                    "id": target['brand'].lower().replace(" ", "_"),
+                    "brand": target['brand'],
+                    "name": target['fixed_name'],
+                    "price": price,
+                    "image": target['local_image'],
+                    "weight_kg": target['fixed_weight'],
+                    "protein_percent": target['default_purity'],
+                    "category": target['category'],
+                    "link": target.get('affiliate_link') or target['url'],
+                    "last_update": datetime.now().strftime("%d/%m/%Y %H:%M")
+                }
+            else:
+                print(f"   -> Intento {attempt + 1} fallido. Reintentando...")
+                time.sleep(random.uniform(2, 5))
+                if attempt == max_retries - 1:
+                    driver.save_screenshot(f"error_{target['brand']}.png")
+                    
+        except Exception as e:
+            print(f"   -> CRASH en intento {attempt + 1}: {str(e)}")
+            time.sleep(random.uniform(2, 5))
+            
+    return None
+
 
 def main():
-    print("--- SCRAPER V6 (Soporte Meta Tags) ---")
+    print("--- SCRAPER V6 ---")
+    time.sleep(random.uniform(15, 60))
     try:
         driver = get_driver()
     except Exception as e:
@@ -246,3 +244,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
