@@ -36,13 +36,13 @@ TARGETS = [
     },
     {
         "brand": "Prozis",
+        "category": "protein",
         "url": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
-        "selectors": { "price": ".selling-price, .final-price, .product-price" },
+        "selectors": { "price": "meta[itemprop='price'], [data-test='final-price']" },
         "fixed_name": "100% Real Whey Protein",
         "default_purity": 80,
         "fixed_weight": 1.0,
         "local_image": "img/prozis.jpg",
-        "category": "protein",
         "affiliate_link": None
     },
     {
