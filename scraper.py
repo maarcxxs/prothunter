@@ -38,10 +38,10 @@ TARGETS = [
         "brand": "HSN",
         "category": "creatina",
         "url": "https://www.hsnstore.com/marcas/raw-series/creatina-monohidrato-en-polvo",
-        "selectors": { "price": ".final-price, .price-container .price, .product-price-primary" },
-        "fixed_name": "CREATINA MONOHIDRATO EN POLVO 150g",
+        "selectors": { "price": ".product-price-primary, .buy-box .price, .product-buy-box .price, span[itemprop='price']" },
+        "fixed_name": "Creatina Monohidrato en Polvo 150g",
         "default_purity": 100,
-        "fixed_weight": 0.150,
+        "fixed_weight": 0.15,
         "local_image": "img/creatina_hsn.jpg",
         "affiliate_link": None
     },
@@ -60,22 +60,18 @@ TARGETS = [
         "brand": "Optimum Nutrition",
         "category": "protein",
         "url": "https://www.masmusculo.com/es/optimum-nutrition/100-whey-gold-standard-2lb-09kg-74210.html",
-        "selectors": { 
-            "price": "#our_price_display, .current-price .price, span[itemprop='price']" 
-        },
+        "selectors": { "price": ".current-price span, #our_price_display, .price-sales, div.current-price" },
         "fixed_name": "Gold Standard 100% Whey",
         "default_purity": 79,
         "fixed_weight": 0.9,
-        "local_image": "img/optimum.jpg",
+        "local_image": "img/on.jpg",
         "affiliate_link": None
     },
     {
         "brand": "Iron Addict Labs",
         "category": "protein",
         "url": "https://www.masmusculo.com/es/iron-addict-labs/addict-whey-2-kg-9214.html",
-        "selectors": { 
-            "price": "#our_price_display, .current-price .price, span[itemprop='price']" 
-        },
+        "selectors": { "price": ".current-price span, #our_price_display, .price-sales, div.current-price" },
         "fixed_name": "Addict Whey - 2KG",
         "default_purity": 73,
         "fixed_weight": 2.0,
