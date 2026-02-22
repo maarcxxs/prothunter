@@ -9,7 +9,7 @@
         "protein_percent": 72,
         "category": "protein",
         "link": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
-        "last_update": "21/02/2026 08:48"
+        "last_update": "22/02/2026 08:49"
     },
     {
         "id": "hsn",
@@ -21,7 +21,7 @@
         "protein_percent": 78,
         "category": "protein",
         "link": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
-        "last_update": "21/02/2026 08:48"
+        "last_update": "22/02/2026 08:49"
     },
     {
         "id": "hsn",
@@ -33,7 +33,7 @@
         "protein_percent": 100,
         "category": "creatina",
         "link": "https://www.hsnstore.com/marcas/raw-series/creatina-monohidrato-en-polvo",
-        "last_update": "21/02/2026 08:49"
+        "last_update": "22/02/2026 08:49"
     },
     {
         "id": "myprotein",
@@ -45,7 +45,7 @@
         "protein_percent": 100,
         "category": "creatina",
         "link": "https://www.myprotein.es/p/nutricion-deportiva/creatina-monohidrato-en-polvo/10530050/?variation=10530054",
-        "last_update": "21/02/2026 08:49"
+        "last_update": "22/02/2026 08:50"
     },
     {
         "id": "prozis",
@@ -57,7 +57,7 @@
         "protein_percent": 80,
         "category": "protein",
         "link": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
-        "last_update": "21/02/2026 08:50"
+        "last_update": "22/02/2026 08:51"
     },
     {
         "id": "biotechusa",
@@ -69,7 +69,7 @@
         "protein_percent": 86,
         "category": "protein",
         "link": "https://shop.biotechusa.es/products/protein-power-1000-g",
-        "last_update": "21/02/2026 08:51"
+        "last_update": "22/02/2026 08:52"
     },
     {
         "id": "decathlon",
@@ -81,6 +81,6 @@
         "protein_percent": 75,
         "category": "protein",
         "link": "https://www.decathlon.es/es/p/whey-protein-sabor-neutro-900g/339696/g77m8756406",
-        "last_update": "21/02/2026 08:51"
+        "last_update": "22/02/2026 08:52"
     }
 ]
