@@ -9,7 +9,7 @@
         "protein_percent": 72,
         "category": "protein",
         "link": "https://www.myprotein.es/nutricion-deportiva/impact-whey-protein/10530943.html",
-        "last_update": "22/02/2026 08:49"
+        "last_update": "23/02/2026 09:06"
     },
     {
         "id": "hsn",
@@ -21,19 +21,19 @@
         "protein_percent": 78,
         "category": "protein",
         "link": "https://www.hsnstore.com/marcas/sport-series/evowhey-protein-2-0",
-        "last_update": "22/02/2026 08:49"
+        "last_update": "23/02/2026 09:07"
     },
     {
         "id": "hsn",
         "brand": "HSN",
         "name": "Creatina Monohidrato en Polvo 150g",
-        "price": 16.6,
+        "price": 13.67,
         "image": "img/creatina_hsn.jpg",
         "weight_kg": 0.15,
         "protein_percent": 100,
         "category": "creatina",
         "link": "https://www.hsnstore.com/marcas/raw-series/creatina-monohidrato-en-polvo",
-        "last_update": "22/02/2026 08:49"
+        "last_update": "23/02/2026 09:07"
     },
     {
         "id": "myprotein",
@@ -45,7 +45,7 @@
         "protein_percent": 100,
         "category": "creatina",
         "link": "https://www.myprotein.es/p/nutricion-deportiva/creatina-monohidrato-en-polvo/10530050/?variation=10530054",
-        "last_update": "22/02/2026 08:50"
+        "last_update": "23/02/2026 09:07"
     },
     {
         "id": "prozis",
@@ -57,7 +57,7 @@
         "protein_percent": 80,
         "category": "protein",
         "link": "https://www.prozis.com/es/es/prozis/100-real-whey-protein-1000-g",
-        "last_update": "22/02/2026 08:51"
+        "last_update": "23/02/2026 09:09"
     },
     {
         "id": "biotechusa",
@@ -69,18 +69,6 @@
         "protein_percent": 86,
         "category": "protein",
         "link": "https://shop.biotechusa.es/products/protein-power-1000-g",
-        "last_update": "22/02/2026 08:52"
-    },
-    {
-        "id": "decathlon",
-        "brand": "Decathlon",
-        "name": "WHEY PROTEIN 900g",
-        "price": 28.99,
-        "image": "img/decathlon.jpg",
-        "weight_kg": 0.9,
-        "protein_percent": 75,
-        "category": "protein",
-        "link": "https://www.decathlon.es/es/p/whey-protein-sabor-neutro-900g/339696/g77m8756406",
-        "last_update": "22/02/2026 08:52"
+        "last_update": "23/02/2026 09:09"
     }
 ]
